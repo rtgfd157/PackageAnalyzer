@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  
+  db:
+    
+    restart: always
+    image: postgres:9.6.22
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=hello_django
+      - POSTGRES_PASSWORD=hello_django
+      - POSTGRES_DB=postgres
+        
+  web:
+    build: .
+    #command: python3 manage.py runserver 0.0.0.0:8000
+    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/App/
+    #restart: always
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  broker:
+    image: rabbitmq:3.8.19
+    hostname: broker
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=mypass
+    ports:
+      - "5672:5672"
+
+  worker1:
+    build: .
+    restart: "no"
+    command: celery -A packagesAnalyzerProj  worker -l info  -E  
+    volumes:
+      - .:/App/
+    depends_on:
+      - broker
+
+
+
+
+  frontend:
+    build: .
+    restart: "no"
+    command: bash -c "npm start   --prefix /App/App/packagesAnalyzerProj/frontend/"
+    volumes:
+      - .:/App/
+    ports:
+      - "3000:3000"
+    depends_on:
+      - web
+
+  # celery-beat:
+  #   build: .
+  #   command: celery -A packagesAnalyzerProj beat -l info
+  #   volumes:
+  #     - ./App/
+  #   depends_on:
+  #     - broker
+
+  flower:  
+    image: mher/flower:0.9.7
+    command: ["flower", "--broker=amqp://admin:mypass@broker", "--port=5555"]  
+    ports:  
+      - 5555:5555 
+    depends_on:
+      - broker

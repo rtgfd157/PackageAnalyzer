@@ -1,0 +1,10 @@
+Django
+djangorestframework
+django-cors-headers
+requests
+psycopg2
+django-celery-results
+django-celery-beat
+flower
+django-debug-toolbar
+django-extensions

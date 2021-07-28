@@ -1,0 +1,37 @@
+
+# Package Analyzer Project:
+
+The project will search for package in npmjs and will insert to DB.
+Each package will show also his dependency.
+
+Stack: Docker - Postgres -  Celery - Django  - React - Flower
+
+need to have:
+Docker and Docker compose
+
+Initalize project:  
+sudo docker-compose -f "docker-compose.yml" up -d --build
+
+
+From web browser:
+ Front end: 
+    http://127.0.0.1:3000/
+ Backend( rest framework):
+    http://127.0.0.1:8000/
+ flower:
+    http://127.0.0.1:5555/
+
+
+need to add:
+
+- Full recursive tree view
+- tests
+- periodic celery task. currently by url call: http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies
+- split db and call for api by threading.
+- good looking UI
+- optimise adding to model
+- refine code so it will be fit for diffrent languages libraries (pipy - python, nugat-c#  and more.....)
+- when searching only adding npm package and his dependecy. dependecy check if on db, will be from celery.
+- Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping 
+- security for password in production
+- website data coruption- when runing task could be situation of all db ruin if the website destionation will decide to change there package data answering.
