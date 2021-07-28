@@ -27,7 +27,7 @@ def celery_task_updating_npm_packages_and_dependecies():
     
     now = datetime.now()
     x_time_ago = now - timedelta(days=7)
-    outdated_npm_query = NpmPackage.objects.filter(updated_at__gte = x_time_ago)
+    outdated_npm_query = NpmPackage.objects.filter(updated_at__lte = x_time_ago)
 
     for npm_package in outdated_npm_query:
         version_from_scraping = start_scraping_npmjs_for_package(npm_package.npm_name)
