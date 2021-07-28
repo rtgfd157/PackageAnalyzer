@@ -13,12 +13,14 @@ Initalize project:
 sudo docker-compose -f "docker-compose.yml" up -d --build
 
 
-From web browser:
+From web browser:  
  Front end: 
     http://127.0.0.1:3000/
- Backend( rest framework):
+
+ Backend( rest framework): 
     http://127.0.0.1:8000/
- flower:
+
+ flower: 
     http://127.0.0.1:5555/
 
 
@@ -26,7 +28,8 @@ need to add:
 
 - Full recursive tree view
 - tests
-- periodic celery task. currently by url call: http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies
+- periodic celery task. currently by url call:
+ http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies
 - split db and call for api by threading.
 - good looking UI
 - optimise adding to model
