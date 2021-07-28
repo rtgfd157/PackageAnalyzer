@@ -24,9 +24,10 @@ From web browser:
     http://127.0.0.1:5555/
 
 
+
 need to add:
 
-- Full recursive tree view
+- Full recursive tree view - Front end
 - tests
 - periodic celery task. currently by url call:
  http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies
@@ -34,7 +35,9 @@ need to add:
 - good looking UI
 - optimise adding to model
 - refine code so it will be fit for diffrent languages libraries (pipy - python, nugat-c#  and more.....)
-- when searching only adding npm package and his dependecy. dependecy check if on db, will be from celery.
 - Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping 
 - security for password in production
 - website data coruption- when runing task could be situation of all db ruin if the website destionation will decide to change there package data answering.
+- block searching all  Npm Packages in Back end
+- logging on DB or on file
+- async function fetch on Front end. 
