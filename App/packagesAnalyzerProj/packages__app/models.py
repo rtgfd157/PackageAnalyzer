@@ -1,7 +1,13 @@
 from django.db import models
+from django.db.models.fields.mixins import NOT_PROVIDED
+from django.db.models.query_utils import Q
 from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package_dependencies, start_scraping_npmjs_for_package
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
+from itertools import chain
+from django.core import serializers
+from django.shortcuts import get_object_or_404
+from django.http import Http404
 
 class NpmPackage(models.Model):
     """
@@ -12,8 +18,8 @@ class NpmPackage(models.Model):
     version = models.CharField(max_length=16)
     updated_at = models.DateField( auto_now=True)
 
-    def _str_(self):
-        return self.npm_name + " " + self.version
+    def __str__(self):
+        return self.npm_name 
 
     def filter_search_npm_package_in_cach_or_db_or_api(self, search_word):
         """
@@ -54,6 +60,65 @@ class NpmPackage(models.Model):
             ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
             print(" $$$$$$$$$$  ")
 
+    def check_if_package_on_db(self,search_word):
+        queryset = NpmPackage.objects.filter(npm_name=search_word)
+        if  queryset.exists():
+            return True
+        return False
+
+    def make_tree_start(self,search_word):
+
+        if not self.check_if_package_on_db(search_word):
+            return NpmPackage()
+        
+        q = self.populate_tree(search_word)
+        return q
+
+    def populate_tree(self, keyword):
+
+        dic = {}
+        try:
+            node = get_object_or_404(NpmPackage, npm_name=keyword)
+        except NpmPackage.DoesNotExist:
+            raise Http404("Given NpmPackage query not found....")
+        #node = NpmPackage.objects.filter(npm_name=keyword)
+        dic['npm_name'] = node.npm_name
+        dic['version'] = node.version
+        dic['id'] = node.id
+
+        dic['dependencies'] ={}
+
+        npd_query_set =  NpmPackageDependecy.objects.filter(npm_package= node)
+
+        deep_npd_qs= []
+        for node_dep in npd_query_set :
+            q = self.populate_tree(node_dep.npm_package_dep_name)
+            if  q:
+                deep_npd_qs.append(q)
+                dic['dependencies'].update( q  )
+                #dic['dependencies'] |= q
+                #npd_query_set |= q
+                
+        #dic.dependencies.update( q)
+        dic['dependencies'] = deep_npd_qs
+
+        #print(f'  before return: {dic}  n\ n\ ')
+        return dic
+        #q = serializers.serialize('python', q)
+        #if  deep_npd_qs != None:
+            #return node | deep_npd_qs
+            #return list(chain(node, npd_query_set))
+            #return serializers.serialize('python',node).append(serializers.serialize('python', deep_npd_qs))  
+
+
+        #else:
+            #return serializers.serialize('python',node).append(serializers.serialize('python', npd_query_set))
+
+            # return node | npd_query_set
+            #return list(chain(node, npd_query_set))
+
+
+        
 
 class NpmPackageDependecy(models.Model):
     """
@@ -65,7 +130,7 @@ class NpmPackageDependecy(models.Model):
     version = models.CharField(max_length=16)
     updated_at =  models.DateField( auto_now=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.npm_package_dep_name + " " + self.version
 
     def filter_search_npm_package_dep_in_cach_or_db_or_api(self, search_word):

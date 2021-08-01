@@ -11,5 +11,4 @@ routerList_packages__app.register(r'npm_package_dependecy', kv.NpmPackageDepende
 
 urlpatterns = [
 
-
     ]

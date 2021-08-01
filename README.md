@@ -27,7 +27,7 @@ From web browser:
 
 need to add:
 
-- Full recursive tree view - Front end
+- ~~Full recursive tree view - Front end~~ - Done    
 - tests
 - periodic celery task. currently by url call:
  http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies

@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
 from rest_framework.routers import DefaultRouter,SimpleRouter
-
+from django.conf import settings
 from packages__app.api.urls import routerList_packages__app
 
 from packages__app import views
@@ -29,5 +29,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path("api/",include("packages__app.api.urls")),
-    path('celery_task_updating_npm_packages_and_dependecies', views.task_view )
+    path("api/",include("packages__app.urls")),
+    path('celery_task_updating_npm_packages_and_dependecies', views.task_view ),
+
 ]
+
+
+
+   

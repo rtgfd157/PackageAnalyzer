@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'django_celery_results',
     'django_celery_beat',
 
+
     'packages__app'
 ]
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',

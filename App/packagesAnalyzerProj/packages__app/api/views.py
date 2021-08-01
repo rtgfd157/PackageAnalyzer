@@ -39,9 +39,6 @@ class NpmPackageDependecyView(viewsets.ModelViewSet):
         """
         search for npm pacage in dependency list for foriegn model keyword
         """
-
-        
-
         search_word = self.request.query_params.get('search')
 
         if not ( self.request.method == 'GET' and 'search' in self.request.GET):
