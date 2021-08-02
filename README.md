@@ -29,8 +29,8 @@ need to add:
 
 - ~~Full recursive tree view - Front end~~ - Done    
 - tests
-- periodic celery task. currently by url call:
- http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies
+- ~~periodic celery task. currently by url call: ~~
+ http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies and also periodically(timing in our setting py file )  
 - split db and call for api by threading.
 - good looking UI
 - optimise adding to model
