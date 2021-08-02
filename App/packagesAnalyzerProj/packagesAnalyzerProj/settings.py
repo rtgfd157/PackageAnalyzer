@@ -182,5 +182,19 @@ CELERY_CACHE_BACKEND = 'django-cache'
 CELERY_ENABLE_UTC = False
 CELERY_TIMEZONE = 'Asia/Jerusalem'
 
+
+
+
+
+#https://medium.com/@ksarthak4ever/django-handling-periodic-tasks-with-celery-daaa2a146f14
+CELERY_BEAT_SCHEDULE = {
+    "celery_task_updating_stockdaydata": {
+        "task": "packages__app.tasks.celery_task_updating_npm_packages_and_dependecies",
+                "schedule": crontab(minute=0,hour="*/24"),
+    }                       
+}
+
+
+
 # django.contrib.sites
 SITE_ID=1

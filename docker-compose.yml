@@ -59,13 +59,13 @@ services:
     depends_on:
       - web
 
-  # celery-beat:
-  #   build: .
-  #   command: celery -A packagesAnalyzerProj beat -l info
-  #   volumes:
-  #     - ./App/
-  #   depends_on:
-  #     - broker
+  celery-beat:
+    build: .
+    command: bash -c " cd ../.. && cd packagesAnalyzerProj/ &&   celery -A packagesAnalyzerProj beat -l info "
+    volumes:
+      - ./App/
+    depends_on:
+      - broker
 
   flower:  
     image: mher/flower:0.9.7
