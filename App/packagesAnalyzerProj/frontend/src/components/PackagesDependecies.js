@@ -2,36 +2,38 @@ import React from 'react';
 import PackageComponent from './PackageComponent';
 
 
-const PackagesDependecies = ({node=[]}) => {
+const PackagesDependecies = ({ node = [] }) => {
+
+
+
+  let randomColor = '#' + Math.floor(Math.random() * 16777215).toString(16);
   return (
     <>
+      <div>
+        <ul>
 
-    <div>
-      <ul>
+          {node.map((data, index) => {
+            if (data) {
 
-      { node.map((data,index) => {
-        if (data) {
-          return (
-            <div key={data.id}>
-              { data.npm_name  && <PackageComponent packages =  {data} >      
-              
-              <li>name: {data.npm_name} , Version: {data.version}  </li>
-              
-              </PackageComponent>
-              }
-              
-
-              
-	        </div>	
-    	   )	
-    	 }
-    	 return null
-    }) }
-      
+              return (
+                <div key={data.id}>
+                  {data.npm_name && <PackageComponent packages={data} bg_color={randomColor} />
 
 
-      </ul>
-    </div>
+                  }
+
+
+
+                </div>
+              )
+            }
+            return null
+          })}
+
+
+
+        </ul>
+      </div>
     </>
   );
 }

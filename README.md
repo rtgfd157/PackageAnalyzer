@@ -32,7 +32,7 @@ need to add:
 - ~~periodic celery task. currently by url call:~~
  http://127.0.0.1:8000/celery_task_updating_npm_packages_and_dependecies and also periodically(timing in our setting py file )  
 - split db and call for api by threading.
-- good looking UI
+- ~~good looking UI~~ added colors. more search being made message in when taking long to build long tree api from web.  
 - optimise adding to model
 - refine code so it will be fit for diffrent languages libraries (pipy - python, nugat-c#  and more.....)
 - Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping 
@@ -41,3 +41,4 @@ need to add:
 - block searching all  Npm Packages in Back end
 - logging on DB or on file
 - async function fetch on Front end. 
+- Functionality _**Error**_ when: searching for "api" keyword, then python _**Error**_ because recursive is too deep.  message -   RecursionError: maximum recursion depth exceeded while calling a Python object.
