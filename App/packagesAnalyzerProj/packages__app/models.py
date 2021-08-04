@@ -8,6 +8,8 @@ from itertools import chain
 from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.http import Http404
+from packages__app.Helper.tree_build_helper import from_node_to_dic, loop_recursivly_on_npm_dependency
+
 
 class NpmPackage(models.Model):
     """
@@ -81,37 +83,32 @@ class NpmPackage(models.Model):
            keyword_search_list  - all search word used on branch
         """
 
-        dic = {}
+        
         try:
             node = get_object_or_404(NpmPackage, npm_name=keyword)
         except NpmPackage.DoesNotExist:
             raise Http404("Given NpmPackage query not found....")
-        #node = NpmPackage.objects.filter(npm_name=keyword)
-        dic['npm_name'] = node.npm_name
-        dic['version'] = node.version
-        dic['id'] = node.id
 
-        dic['dependencies'] ={}
+        dic = from_node_to_dic(node)
+        
 
         npd_query_set =  NpmPackageDependecy.objects.filter(npm_package= node)
 
         deep_npd_qs= []
         for node_dep in npd_query_set :
 
-            if not node_dep.npm_package_dep_name in keyword_search_list: 
+            if not ( node_dep.npm_package_dep_name in keyword_search_list): 
                 # check for not making cyclic recursion such in "api" npm search  d->es5-ext->es6-iterator->d ....
                 keyword_search_list.append( node_dep.npm_package_dep_name )
-                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list, loop_number+1 )
-                
 
+                # for passing keyword_search_list as value and not refrence [:]
+                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list[:], loop_number+1 )
+                
                 if  q:
                     deep_npd_qs.append(q)
-                    dic['dependencies'].update( q  )
-                    #dic['dependencies'] |= q
-                    #npd_query_set |= q
             else:
                 print(f' loop number: {loop_number}')
-                print(f' node_dep.npm_package_dep_name  {node_dep.npm_package_dep_name } in keyword list: {len(keyword_search_list)}')
+                print(f'  node_dep.npm_package_dep_name  {node_dep.npm_package_dep_name } in keyword list: {len(keyword_search_list)}')
                 
         dic['dependencies'] = deep_npd_qs
 
