@@ -72,10 +72,10 @@ class NpmPackage(models.Model):
         if not self.check_if_package_on_db(search_word):
             return NpmPackage()
         
-        q = self.populate_tree(search_word)
+        q = self.populate_tree(search_word,[],0)
         return q
 
-    def populate_tree(self, keyword, keyword_search_list =[]):
+    def populate_tree(self, keyword, keyword_search_list =[],loop_number =0):
         """
            node_parent in order to  check  circular call parent->child->parent
            keyword_search_list  - all search word used on branch
@@ -100,13 +100,18 @@ class NpmPackage(models.Model):
 
             if not node_dep.npm_package_dep_name in keyword_search_list: 
                 # check for not making cyclic recursion such in "api" npm search  d->es5-ext->es6-iterator->d ....
-                keyword_search_list.append( node.npm_name )
-                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list )
+                keyword_search_list.append( node_dep.npm_package_dep_name )
+                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list, loop_number+1 )
+                
+
                 if  q:
                     deep_npd_qs.append(q)
                     dic['dependencies'].update( q  )
                     #dic['dependencies'] |= q
                     #npd_query_set |= q
+            else:
+                print(f' loop number: {loop_number}')
+                print(f' node_dep.npm_package_dep_name  {node_dep.npm_package_dep_name } in keyword list: {len(keyword_search_list)}')
                 
         dic['dependencies'] = deep_npd_qs
 
@@ -135,7 +140,6 @@ class NpmPackageDependecy(models.Model):
         # query our db
         queryset = NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word)
         if  queryset.exists():
-            print("exsist ")
             return queryset 
         
         else:

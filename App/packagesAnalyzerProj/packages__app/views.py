@@ -26,9 +26,9 @@ def package_tree_search(request,search_word, library_name):
     queryset = NpmPackage()
 
 
-    query_exsit = queryset.check_if_package_on_db(search_word)
-    print(f' query_exsist: {query_exsit}')
-    if not query_exsit:
+    query_exists = queryset.check_if_package_on_db(search_word)
+    print(f' query_exsist: {query_exists}')
+    if not query_exists:
         return JsonResponse({}, safe=False)
 
     q = queryset.make_tree_start(search_word)
