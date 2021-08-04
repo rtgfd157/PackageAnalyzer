@@ -36,9 +36,9 @@ need to add:
 - optimise adding to model
 - refine code so it will be fit for diffrent languages libraries (pipy - python, nugat-c#  and more.....)
 - Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping 
-- security for password in production
+- security for password in production - (not matter now)
 - website data coruption- when runing task could be situation of all db ruin if the website destionation will decide to change there package data answering.
-- block searching all  Npm Packages in Back end
+- ~~block searching all  Npm Packages in Back end - to change from viewsets in packages__app/api/view ...~~( not matter now)
 - logging on DB or on file
-- async function fetch on Front end. 
-- Functionality _**Error**_ when: searching for "api" keyword, then python _**Error**_ because recursive is too deep.  message -   RecursionError: maximum recursion depth exceeded while calling a Python object.
+- ~~async function fetch on Front end.~~ 
+

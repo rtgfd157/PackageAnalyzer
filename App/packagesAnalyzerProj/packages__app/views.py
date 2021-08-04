@@ -18,19 +18,13 @@ def package_tree_search(request,search_word, library_name):
         will fetch tree of package from db
     """
 
-
     # if package not in db will add package and dependecy recursivlly  - base on old model function  ... need to refine logic
     queryset = NpmPackage()
     queryset.filter_search_npm_package_in_cach_or_db_or_api(search_word)
 
 
-
-
     queryset = NpmPackage()
-        #queryset = NpmPackage.objects.filter(npm_name= search_word)
-    #q = queryset.filter_search_npm_package_in_cach_or_db_or_api(search_word)
-    #q = NpmPackage.objects.all()
-    #dic=  model_to_dict(NpmPackage.objects.all())
+
 
     query_exsit = queryset.check_if_package_on_db(search_word)
     print(f' query_exsist: {query_exsit}')

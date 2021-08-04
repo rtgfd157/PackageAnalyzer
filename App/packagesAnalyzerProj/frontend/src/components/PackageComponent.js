@@ -12,7 +12,7 @@ import PackagesDependecies from './PackagesDependecies';
 
       <ul>
         
-      { packages.npm_name  && <li  style={BarStyling}> name2: {packages.npm_name} , version2: {packages.version} </li>}
+      { packages.npm_name  && <li  style={BarStyling}> name: {packages.npm_name} , version: {packages.version} </li>}
       { packages.npm_name  &&   <p style={{textAlign:"left"}}> number of dependecies: {packages.dependencies.length}</p>  }
 
       <PackagesDependecies node = {packages.dependencies} />

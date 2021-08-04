@@ -27,15 +27,12 @@ class NpmPackage(models.Model):
             need to implement caching in elasticsearch
         """
 
-        print('sssssssssssssssssssssssssssss')
         # query our db
         queryset = NpmPackage.objects.filter(npm_name=search_word)
         if  queryset.exists():
-            print("exsist ")
             return queryset 
         
         else:
-            print('tttttttttttttttttttttt')
             self.adding_scarp_packages_and_package_dep(search_word)
             return NpmPackage.objects.filter(npm_name=search_word)
 
@@ -50,7 +47,6 @@ class NpmPackage(models.Model):
             so, all nesting will be added
         """
         # query npmjs api
-        print("searching ")
         version = start_scraping_npmjs_for_package(search_word)
         print(f'version-{version} ')
         if version != None:
@@ -58,7 +54,6 @@ class NpmPackage(models.Model):
             queryset.save() 
             ob=  NpmPackageDependecy()
             ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
-            print(" $$$$$$$$$$  ")
 
     def check_if_package_on_db(self,search_word):
         queryset = NpmPackage.objects.filter(npm_name=search_word)
@@ -67,6 +62,12 @@ class NpmPackage(models.Model):
         return False
 
     def make_tree_start(self,search_word):
+        """
+            making recursive tree
+            {  npm_name:val , version: val2 , id: val3, dependencies: [  list[0], list[] ]    }
+
+            each node will have the above shape
+        """
 
         if not self.check_if_package_on_db(search_word):
             return NpmPackage()
@@ -74,7 +75,11 @@ class NpmPackage(models.Model):
         q = self.populate_tree(search_word)
         return q
 
-    def populate_tree(self, keyword):
+    def populate_tree(self, keyword, keyword_search_list =[]):
+        """
+           node_parent in order to  check  circular call parent->child->parent
+           keyword_search_list  - all search word used on branch
+        """
 
         dic = {}
         try:
@@ -92,33 +97,21 @@ class NpmPackage(models.Model):
 
         deep_npd_qs= []
         for node_dep in npd_query_set :
-            q = self.populate_tree(node_dep.npm_package_dep_name)
-            if  q:
-                deep_npd_qs.append(q)
-                dic['dependencies'].update( q  )
-                #dic['dependencies'] |= q
-                #npd_query_set |= q
+
+            if not node_dep.npm_package_dep_name in keyword_search_list: 
+                # check for not making cyclic recursion such in "api" npm search  d->es5-ext->es6-iterator->d ....
+                keyword_search_list.append( node.npm_name )
+                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list )
+                if  q:
+                    deep_npd_qs.append(q)
+                    dic['dependencies'].update( q  )
+                    #dic['dependencies'] |= q
+                    #npd_query_set |= q
                 
-        #dic.dependencies.update( q)
         dic['dependencies'] = deep_npd_qs
 
-        #print(f'  before return: {dic}  n\ n\ ')
         return dic
-        #q = serializers.serialize('python', q)
-        #if  deep_npd_qs != None:
-            #return node | deep_npd_qs
-            #return list(chain(node, npd_query_set))
-            #return serializers.serialize('python',node).append(serializers.serialize('python', deep_npd_qs))  
 
-
-        #else:
-            #return serializers.serialize('python',node).append(serializers.serialize('python', npd_query_set))
-
-            # return node | npd_query_set
-            #return list(chain(node, npd_query_set))
-
-
-        
 
 class NpmPackageDependecy(models.Model):
     """
@@ -147,7 +140,6 @@ class NpmPackageDependecy(models.Model):
         
         else:
             # query npmjs api
-            print("searching ")
             dependecies = start_scraping_npmjs_for_package_dependencies(search_word)
             # print(f'dependecies-{dependecies} ')
             if dependecies != None:
