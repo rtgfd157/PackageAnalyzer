@@ -9,7 +9,10 @@ from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from packages__app.Helper.tree_build_helper import from_node_to_dic
+from packages__app.Helper.threading_helper import start_threading_scrap_insert
+import threading
 
+lock = threading.Lock()
 
 class NpmPackage(models.Model):
     """
@@ -50,12 +53,15 @@ class NpmPackage(models.Model):
         """
         # query npmjs api
         version = start_scraping_npmjs_for_package(search_word)
-        print(f'version-{version} ')
+        print(f'version-{version} - name: {search_word} ')
         if version != None:
             queryset= NpmPackage(npm_name= search_word ,version=version )
-            queryset.save() 
+            with lock:
+                queryset.save()
+
             ob=  NpmPackageDependecy()
             ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
+        
 
     def check_if_package_on_db(self,search_word):
         queryset = NpmPackage.objects.filter(npm_name=search_word)
@@ -130,7 +136,8 @@ class NpmPackageDependecy(models.Model):
             search the word in db if not, in api request to npmjs.com
             need to implement caching in elasticsearch
         """
-
+        
+        
         # query our db
         queryset = NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word)
         if  queryset.exists():
@@ -141,8 +148,10 @@ class NpmPackageDependecy(models.Model):
             dependecies = start_scraping_npmjs_for_package_dependencies(search_word)
             # print(f'dependecies-{dependecies} ')
             if dependecies != None:
-                self.insert_package_dependecy_bulk_from_scraping(dependecies, search_word)
-
+                # will act as start and ending point for other threads
+                start_end_threading_point(self.insert_package_dependecy_bulk_from_scraping , dependecies, search_word )
+                #self.insert_package_dependecy_bulk_from_scraping(dependecies, search_word)
+                 
             return NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word)
 
     def insert_package_dependecy_bulk_from_scraping(self,  dependecies, search_word):
@@ -153,10 +162,18 @@ class NpmPackageDependecy(models.Model):
             # name -key , version - value
             npd =  NpmPackageDependecy(npm_package = package_object, npm_package_dep_name=name, version= version)
             dep_list.append( npd )
-        NpmPackageDependecy.objects.bulk_create(dep_list)
 
-        for name, version in dependecies.items():
-            self.add_if_dep_package_not_in_npmPackage_model(name)
+        with lock:    
+            NpmPackageDependecy.objects.bulk_create(dep_list)
+        
+        is_threaded =False
+
+        if is_threaded:
+            start_threading_scrap_insert(len(dependecies), dependecies, self.add_if_dep_package_not_in_npmPackage_model )
+            
+        else:
+            for name, version in dependecies.items():
+                self.add_if_dep_package_not_in_npmPackage_model(name)
 
     def add_if_dep_package_not_in_npmPackage_model(self, search_word):
         """

@@ -57,6 +57,7 @@ class SearchPage extends React.Component {
     } 
 
     this.setState({ is_fetching : true});
+    this.setState({ tree_data : []});
 
     let p= await this.fetch_data('http://127.0.0.1:8000/api/packageTreeSearch/'+this.state.search_word+'/npmpackage/');
     this.setState({ tree_data : p});
@@ -76,6 +77,15 @@ class SearchPage extends React.Component {
       async fetch_data(adress){
         return  await  fetch(adress)
        .then(response => response.json())
+       .catch(error => {
+        this.setState({ is_fetching : false});
+        this.setState({ pack_data : []});
+          this.setState( { dep_data : [] });
+          this.setState( { npm_name : '' });
+        console.log('error in fetch');
+        throw(error);
+        
+        })
        
      }
     
