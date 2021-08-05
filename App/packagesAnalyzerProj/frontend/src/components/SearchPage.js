@@ -1,6 +1,7 @@
 import React from 'react';
 import PackageSearchResult from './PackageSearchResult';
 import PackageComponent from './PackageComponent';
+import Loader from 'react-loader'; // fetch symbol animation
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -13,7 +14,8 @@ class SearchPage extends React.Component {
        is_dep : false,
        data_from_res_manipulate: [],
        message_after_search: '',
-       tree_data: []
+       tree_data: [],
+       is_fetching: false
 
        };
 
@@ -54,8 +56,11 @@ class SearchPage extends React.Component {
       return 
     } 
 
+    this.setState({ is_fetching : true});
+
     let p= await this.fetch_data('http://127.0.0.1:8000/api/packageTreeSearch/'+this.state.search_word+'/npmpackage/');
     this.setState({ tree_data : p});
+    this.setState({ is_fetching : false});
  
   
     if (this.state.tree_data.npm_name) {
@@ -73,7 +78,7 @@ class SearchPage extends React.Component {
        .then(response => response.json())
        
      }
-
+    
 ///////////////////////////////////////////////////////
         check_not_empty_search_word(){
 
@@ -130,6 +135,7 @@ class SearchPage extends React.Component {
         <input type="submit" value="Submit" />
       </form>
 
+      { this.state.is_fetching  && <Loader/>}
 
       <PackageSearchResult   
       npm_name={this.state.tree_data.npm_name}

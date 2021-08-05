@@ -11,5 +11,3 @@ def from_node_to_dic(node):
     return dic
 
 
-def loop_recursivly_on_npm_dependency():
-    pass

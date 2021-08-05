@@ -8,7 +8,7 @@ from itertools import chain
 from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.http import Http404
-from packages__app.Helper.tree_build_helper import from_node_to_dic, loop_recursivly_on_npm_dependency
+from packages__app.Helper.tree_build_helper import from_node_to_dic
 
 
 class NpmPackage(models.Model):
@@ -83,15 +83,13 @@ class NpmPackage(models.Model):
            keyword_search_list  - all search word used on branch
         """
 
-        
         try:
             node = get_object_or_404(NpmPackage, npm_name=keyword)
         except NpmPackage.DoesNotExist:
             raise Http404("Given NpmPackage query not found....")
 
-        dic = from_node_to_dic(node)
+        dic = from_node_to_dic(node) # return dictionary from NpmPackage object
         
-
         npd_query_set =  NpmPackageDependecy.objects.filter(npm_package= node)
 
         deep_npd_qs= []
@@ -111,7 +109,6 @@ class NpmPackage(models.Model):
                 print(f'  node_dep.npm_package_dep_name  {node_dep.npm_package_dep_name } in keyword list: {len(keyword_search_list)}')
                 
         dic['dependencies'] = deep_npd_qs
-
         return dic
 
 
