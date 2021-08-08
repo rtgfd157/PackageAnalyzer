@@ -198,3 +198,10 @@ CELERY_BEAT_SCHEDULE = {
 
 # django.contrib.sites
 SITE_ID=1
+
+
+
+ES_INDEX='elastic_packages_tree'
+ES_HOST= 'elasticsearch' # name of container/image in  the docker compose
+#'127.0.0.1' # or localhost
+ES_PORT='9200'
