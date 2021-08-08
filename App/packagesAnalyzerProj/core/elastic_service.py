@@ -6,8 +6,13 @@ import logging
 logger = logging.getLogger(__name__)
 
 def get_client():
+
+    es= Elasticsearch(settings.ES_HOST+':'+settings.ES_PORT)
+    # ignore 400 cause by IndexAlreadyExistsException when creating an index
+    es.indices.create(index='elastic_packages_tree', ignore=400)
+    #The ignore=400 arg is an interim solution here for the Python client. The code above will create index if it doesn't exist, and won't raise an error if it is already there.
     print(f' \n settings.ES_HOST: {settings.ES_HOST}, settings.ES_PORT: {settings.ES_PORT}  \n ')
-    return Elasticsearch(settings.ES_HOST+':'+settings.ES_PORT)
+    return es
 
 def el_search_for_package_tree(query):
     client = get_client()
@@ -22,7 +27,7 @@ def el_search_for_package_tree(query):
         },
     })
     a = result['hits']['hits']
-    print(f' result: \n {a}')
+    # print(f' result: \n {a}')
     for h in result['hits']['hits']:
         #b= h['_source']
         return h['_source']

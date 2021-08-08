@@ -12,10 +12,11 @@ Docker and Docker compose
 Initalize project:  
 sudo docker-compose -f "docker-compose.yml" up -d --build
 
-In elasticsearch container:
+~~In elasticsearch container:
 in shell post ->   
  curl -XPUT 'localhost:9200/elastic_packages_tree?pretty'  
-The command will make index (that will correlate to index in settings file)  
+The command will make index (that will correlate to index in settings file)~~ 
+checking every  search in code and create if not exists, need to change to make on server restart, or on elasticsearch image built.   
 
 
 
