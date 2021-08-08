@@ -4,7 +4,7 @@
 The project will search for package in npmjs and will insert to DB.
 Each package will show also his dependency.
 
-Stack: Docker - Postgres -  Celery - Django  - React - Flower
+Stack: Docker - Postgres -  Celery - Django  - React - Flower - ElasticSearch
 
 need to have:
 Docker and Docker compose
