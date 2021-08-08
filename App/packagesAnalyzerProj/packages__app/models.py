@@ -149,8 +149,8 @@ class NpmPackageDependecy(models.Model):
             # print(f'dependecies-{dependecies} ')
             if dependecies != None:
                 # will act as start and ending point for other threads
-                start_end_threading_point(self.insert_package_dependecy_bulk_from_scraping , dependecies, search_word )
-                #self.insert_package_dependecy_bulk_from_scraping(dependecies, search_word)
+                #start_end_threading_point(self.insert_package_dependecy_bulk_from_scraping , dependecies, search_word )
+                self.insert_package_dependecy_bulk_from_scraping(dependecies, search_word)
                  
             return NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word)
 
