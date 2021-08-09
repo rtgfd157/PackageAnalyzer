@@ -17,8 +17,14 @@ class ElasticSearchComponent extends React.Component {
 
     async componentDidMount() {
        let  data = await  this.fetch_data(this.adress_search_el_packages_tree_count );
-       console.log('data : '+ data);
+
+       if (data){
+        console.log('data : '+ data);
          this.setState({ el_pack_count : data});
+       }else{
+        this.setState({ el_pack_count : ''});
+       }
+       
       }
 
       async fetch_data(adress){
