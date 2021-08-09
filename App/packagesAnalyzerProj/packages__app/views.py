@@ -20,3 +20,4 @@ def package_tree_search(request,search_word, library_name):
         will fetch tree of package from db
     """
     return start_tree(search_word, library_name)
+

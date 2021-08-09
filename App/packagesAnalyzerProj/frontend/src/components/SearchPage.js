@@ -27,6 +27,7 @@ class SearchPage extends React.Component {
 
   }
 
+
   async handleChange(event) {
     // this.setState({[event.target.name]: event.target.value});
     await this.setState({search_word: event.target.value});

@@ -47,8 +47,6 @@ services:
       - broker
 
 
-
-
   frontend:
     build: .
     restart: "no"
@@ -59,6 +57,11 @@ services:
       - "3000:3000"
     depends_on:
       - web
+    # build:
+    #   context: ./App/packagesAnalyzerProj/frontend
+    #   dockerfile: ./Dockerfile-FronEndNodeJS.Dockerfile
+    #command: ["npm", "start" ]
+
 
   celery-beat:
     build: .
@@ -78,7 +81,10 @@ services:
 
   # Elasticsearch Docker Images: https://www.docker.elastic.co/
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    #image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
+    build: 
+      context: ./Dockerfiles
+      dockerfile: Dockerfile-ElasticSearch.Dockerfile
     container_name: elasticsearch
     environment:
       - xpack.security.enabled=false

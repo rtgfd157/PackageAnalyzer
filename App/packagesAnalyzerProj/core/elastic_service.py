@@ -6,13 +6,21 @@ import logging
 logger = logging.getLogger(__name__)
 
 def get_client():
+    return Elasticsearch(settings.ES_HOST+':'+settings.ES_PORT)
 
-    es= Elasticsearch(settings.ES_HOST+':'+settings.ES_PORT)
-    # ignore 400 cause by IndexAlreadyExistsException when creating an index
-    es.indices.create(index='elastic_packages_tree', ignore=400)
-    #The ignore=400 arg is an interim solution here for the Python client. The code above will create index if it doesn't exist, and won't raise an error if it is already there.
-    print(f' \n settings.ES_HOST: {settings.ES_HOST}, settings.ES_PORT: {settings.ES_PORT}  \n ')
-    return es
+    '''
+     code below is commented because of:
+        Dockerfile-ElasticSearch.Dockerfile file with line:
+        HEALTHCHECK CMD curl -XPUT  'localhost:9200/elastic_packages_tree?pretty' | grep -E '^green'
+
+        will make index on setup
+    '''
+    # es= Elasticsearch(settings.ES_HOST+':'+settings.ES_PORT)
+    # # ignore 400 cause by IndexAlreadyExistsException when creating an index
+    # es.indices.create(index='elastic_packages_tree', ignore=400)
+    # #The ignore=400 arg is an interim solution here for the Python client. The code above will create index if it doesn't exist, and won't raise an error if it is already there.
+    # print(f' \n settings.ES_HOST: {settings.ES_HOST}, settings.ES_PORT: {settings.ES_PORT}  \n ')
+    # return es
 
 def el_search_for_package_tree(query):
     client = get_client()
@@ -49,3 +57,7 @@ def upsert_tree_in_el_search(tree_dic):
     )
     return response
 
+def get_packages_tree_count():
+    client = get_client()
+    client.indices.refresh(settings.ES_INDEX)
+    return client.cat.count(settings.ES_INDEX, params={"format": "json"})

@@ -1,7 +1,7 @@
 
 # Package Analyzer Project:
 
-The project will search for package in npmjs and will insert to DB.
+The project will search for package in npmjs and will insert  to DB, and could be searach by 1)ElasticSearch 2)DB-postgres 3)api- https://registry.npmjs.org/{package_name}/latest  .  
 Each package will show also his dependency.
 
 Stack: Docker - Postgres -  Celery - Django  - React - Flower - ElasticSearch
@@ -21,14 +21,17 @@ checking every  search in code and create if not exists, need to change to make 
 
 
 From web browser:  
- Front end: 
+ Front end:   
     http://127.0.0.1:3000/
 
- Backend( rest framework): 
+ Backend( rest framework):   
     http://127.0.0.1:8000/
 
- flower: 
+ flower:  
     http://127.0.0.1:5555/
+
+  ElasticSearch:   
+    http://127.0.0.1:9200/
 
 
 
@@ -42,8 +45,8 @@ need to add:
 - ~~good looking UI added colors. need to add:  search being made message  when in searching process.~~
 with:  https://steemit.com/utopian-io/@jfuenmayor96/show-a-loading-animation-while-your-elements-are-loading-in-react
 - optimise adding to model 
-- refine code so it will be fit for diffrent languages libraries (pipy - python, nugat-c#  and more.....)
-- Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping 
+- refine code so it will be fit for different languages libraries (pipy - python, nugat-c#  and more.....)
+- ~~Caching with elasticsearch. search hierarcy: 1)caching- elasticsearch 2) DB 3) api call/scraping~~ 
 - security for password in production - (not matter now)
 - website data coruption- when runing task could be situation of all db ruin if the website destionation will decide to change there package data answering.
 - ~~block searching all  Npm Packages in Back end - to change from viewsets in packages__app/api/view ...~~( not matter now)

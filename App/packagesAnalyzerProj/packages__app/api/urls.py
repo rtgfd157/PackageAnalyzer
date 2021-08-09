@@ -10,5 +10,14 @@ routerList_packages__app.register(r'npm_package_dependecy', kv.NpmPackageDepende
 
 
 urlpatterns = [
+        path("count_doc_pacakges_elastic/", 
+         kv.ElasticSearchCountDocuments.as_view(),
+         name="count-doc-pacakges-elastic"),
 
+         path("count_npm_pacakges_and_dep_packages/", 
+         kv.NpmAndNpmDepCounts.as_view(),
+         name="count-npm-pacakges-and-dep_packages"),
+
+
+         
     ]
