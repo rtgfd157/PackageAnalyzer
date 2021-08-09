@@ -15,13 +15,14 @@ import {
 } from "react-router-dom";
 function App() {
 
+  const BarStyling = {background:"#9aad93", border:"double", padding:"0.6rem", display: 'inline-block'}
   
 
   return (
     <div className="App">
       
 <Router>
-            <div  style={{display: 'inline-block'}} className="row">
+            <div  style={BarStyling} className="row">
              <Link  to="/">Home</Link>  
             
               <Link to="/about">About</Link>

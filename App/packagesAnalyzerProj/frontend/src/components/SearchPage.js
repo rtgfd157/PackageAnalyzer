@@ -2,6 +2,7 @@ import React from 'react';
 import PackageSearchResult from './PackageSearchResult';
 import PackageComponent from './PackageComponent';
 import Loader from 'react-loader'; // fetch symbol animation
+import SearchBar from './SearchBarForm';
 
 class SearchPage extends React.Component {
   constructor(props) {
@@ -138,13 +139,10 @@ class SearchPage extends React.Component {
 
   render() {
     return (
-      <div>
-      <form onSubmit={this.handleSubmit}>
-        <label> 
-          <input type="text" name="search_word" value={this.state.search_word} onChange={this.handleChange} />
-        </label>
-        <input type="submit" value="Submit" />
-      </form>
+      <div style={{ padding: "left" }}>
+      
+
+      <SearchBar handleSubmit= {this.handleSubmit} handleChange= {this.handleChange}  search_word = {this.state.search_word}  /> 
 
       { this.state.is_fetching  && <Loader/>}
 

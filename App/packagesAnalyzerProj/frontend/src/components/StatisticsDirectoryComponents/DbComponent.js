@@ -14,6 +14,8 @@ class DbComponent extends React.Component {
         };
         this.fetch_data = this.fetch_data.bind(this);
         this.adress_search_el_packages_tree_count = 'http://127.0.0.1:8000/api/count_npm_pacakges_and_dep_packages/';
+        this.Styling = {background:"#F2F1F9", padding:"0.5rem", margin: '1%', flex: 1};
+
     }
 
     async componentDidMount() {
@@ -41,7 +43,7 @@ class DbComponent extends React.Component {
         return (
             <div>
                 <h2> DB Stats Component : </h2>
-                <Card style={{ flex: 1 }}>
+                <Card style={this.Styling}>
                     <CardBody>
                         <CardTitle tag="h5"> <u> DB npm package And npm Dependencies </u></CardTitle>
                         <CardSubtitle tag="h6" className="mb-2 text-muted">Counting of NpmPackage And NpmPackageDependecy Models</CardSubtitle>
