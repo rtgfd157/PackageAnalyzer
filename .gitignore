@@ -1,33 +1,33 @@
-static/*
+/App/packagesAnalyzerProj/static/*
 db.sqlite3
 packagesAnalyzerProj/static/*
 
 celerybeat-schedule.*
 
 .idea
-frontend/.DS_Store
-frontend/node_modules
-frontend/dist/
+/App/packagesAnalyzerProjfrontend/.DS_Store
+/App/packagesAnalyzerProjfrontend/node_modules
+/App/packagesAnalyzerProjfrontend/dist/
 
 # local env files
-frontend/.env.local
-frontend/.env.*.local
+/App/packagesAnalyzerProjfrontend/.env.local
+/App/packagesAnalyzerProjfrontend/.env.*.local
 
 # Log files
-frontend/npm-debug.log*
-frontend/yarn-debug.log*
-frontend/yarn-error.log*
-frontend/pnpm-debug.log*
+/App/packagesAnalyzerProjfrontend/npm-debug.log*
+/App/packagesAnalyzerProjfrontend/yarn-debug.log*
+/App/packagesAnalyzerProjfrontend/yarn-error.log*
+/App/packagesAnalyzerProjfrontend/pnpm-debug.log*
 
 # Editor directories and files
-frontend/.idea
-frontend/.vscode
-frontend/*.suo
-frontend/*.ntvs*
-frontend/*.njsproj
-frontend/*.sln
-frontend/*.sw?
+/App/packagesAnalyzerProjfrontend/.idea
+/App/packagesAnalyzerProjfrontend/.vscode
+/App/packagesAnalyzerProjfrontend/*.suo
+/App/packagesAnalyzerProjfrontend/*.ntvs*
+/App/packagesAnalyzerProjfrontend/*.njsproj
+/App/packagesAnalyzerProjfrontend/*.sln
+/App/packagesAnalyzerProjfrontend/*.sw?
 
 __pycache__/*
-packages__app/__pycache__/*
-packagesAnalyzerProj/__pycache__/*
+/App/packagesAnalyzerProj/packages__app/__pycache__/*
+/App/packagesAnalyzerProj/__pycache__/*

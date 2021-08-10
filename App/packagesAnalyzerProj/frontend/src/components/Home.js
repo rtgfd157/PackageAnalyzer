@@ -4,7 +4,7 @@ import React from 'react';
 const Home = () => {
   return (
     
-    <div>
+    <div style={{margin: '10px'}} >
         <h2>Project Npm Packages Analysis: </h2>
         <h3>Links</h3>
         <ul>

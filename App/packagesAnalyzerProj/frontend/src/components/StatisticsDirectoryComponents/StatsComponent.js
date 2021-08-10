@@ -14,8 +14,9 @@ class StatsComponent extends React.Component {
   
     render() {
       return (
-          <div>
-       <h2> <u>Stats Component : </u> </h2>
+          <div style={{margin: '10px'}}>
+            <br/>
+       <h2 style={{margin: '10px', padding: '1%'}}> <u>Stats Component : </u> </h2>
        <CardDeck style={{display: 'flex', flexDirection: 'row', justifyContent: 'center'}}>
        <DbComponent></DbComponent>
        <ElasticSearchComponent/>
