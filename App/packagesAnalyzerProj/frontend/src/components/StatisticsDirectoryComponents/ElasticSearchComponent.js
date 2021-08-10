@@ -22,7 +22,7 @@ class ElasticSearchComponent extends React.Component {
 
        if (data){
         console.log('data : '+ data);
-         this.setState({ el_pack_count : data});
+         this.setState({ el_pack_count : data[0]});
        }else{
         this.setState({ el_pack_count : ''});
        }

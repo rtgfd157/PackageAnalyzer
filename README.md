@@ -10,7 +10,9 @@ need to have:
 Docker and Docker compose
 
 Initalize project:  
-sudo docker-compose -f "docker-compose.yml" up -d --build
+sudo docker-compose -f "docker-compose.yml" up -d --build  
+Note:
+dont build if data directory exists. could be acheived with : sudo rm -rf data  
 
 ~~In elasticsearch container:
 in shell post ->   

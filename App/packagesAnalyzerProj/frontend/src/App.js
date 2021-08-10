@@ -15,23 +15,23 @@ import {
 } from "react-router-dom";
 function App() {
 
-  const BarStyling = {background:"#9aad93", border:"double", padding:"0.6rem", display: 'inline-block'}
-  
+  const BarStyling = {background:"#9aad93", border:"double", padding:"0.6rem", display: 'inline'}
+  const Styling = {  margin: '1%'};
 
   return (
     <div className="App">
       
 <Router>
             <div  style={BarStyling} className="row">
-             <Link  to="/">Home</Link>  
+             <Link  style={Styling} to="/">Home</Link>  
             
-              <Link to="/about">About</Link>
+              <Link style={Styling} to="/about">About</Link>
            
             
-              <Link to="/search_page">Search Page</Link>
+              <Link style={Styling} to="/search_page">Search Page</Link>
             
             
-              <Link to="/stats_page">Stats</Link>
+              <Link style={Styling} to="/stats_page">Stats</Link>
               </div>
 
 
