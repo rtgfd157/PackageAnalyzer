@@ -22,8 +22,8 @@ const ElasticTopHitPackages = ({ packages = [] }) => {
                 </div>
               )
             }
-            //return null
-            return ( <p> Empty </p> )
+            return null
+            
           })}
 
 

@@ -17,15 +17,19 @@ RUN  yes | apt-get install npm
 WORKDIR /frontend
 
 # install app dependencies
-COPY package.json .
-COPY package-lock.json .
-RUN npm install --save 
-RUN npm install react-scripts@3.4.1 -g  --save
+#COPY package.json .
+#COPY package-lock.json .
+#RUN npm install --save 
+#RUN npm install react-scripts@3.4.1 -g  --save
 
 # libraries used in project. somehow package.json dont install them ...
-RUN npm install react-loader@2.4.7 bootstrap@5.1.0 react-router-dom@5.2.0 reactstrap@8.9.0 --save 
+#RUN npm install react-loader@2.4.7 bootstrap@5.1.0 react-router-dom@5.2.0 reactstrap@8.9.0 --save 
+
+# VOLUME [ "/frontend/node_modules" ]
 
 # add app
 COPY . .
 
-CMD ["npm", "start" ]
+#CMD ["npm", "start" ]
+
+CMD  bash ./start.sh 

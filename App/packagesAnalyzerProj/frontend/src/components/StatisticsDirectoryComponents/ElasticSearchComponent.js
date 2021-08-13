@@ -75,10 +75,10 @@ class ElasticSearchComponent extends React.Component {
               <u>  http://127.0.0.1:8000/api/count_doc_pacakges_elastic/</u></CardText>
               
               
-              <CardTitle tag="h6"><u>  Top Packages:   </u></CardTitle>
+              {  this.state.top_packages.length > 0  &&  <CardTitle tag="h6"><u>  Top Packages:   </u></CardTitle> }    
        <CardText> 
 
-
+        
        <ElasticTopHitPackages packages = {this.state.top_packages} />
        </CardText>
         
