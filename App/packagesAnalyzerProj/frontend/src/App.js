@@ -1,4 +1,5 @@
 
+import React from 'react';
 import SearchPage from './components/SearchPage';
 import StatsComponent  from  './components/StatisticsDirectoryComponents/StatsComponent';
 import AboutComponent from './components/AboutComponent';

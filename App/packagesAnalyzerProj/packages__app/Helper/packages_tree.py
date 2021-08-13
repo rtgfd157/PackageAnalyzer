@@ -9,8 +9,13 @@ from django.http import HttpResponse
 
 
 def start_tree(search_word, library_name):
+    
+    str_report = ''
+    
     ans= el_search_for_package_tree(search_word)
     #print(f' \n \n \n  from elastic: {ans}  \n \n')
+
+
     if len(ans) > 0:
         print(f'return from elastic')
         return JsonResponse(ans, safe=False)

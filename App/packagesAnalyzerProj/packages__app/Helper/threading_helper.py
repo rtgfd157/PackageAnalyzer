@@ -19,6 +19,13 @@ def start_threading_scrap_insert(number_of_threading, dic, function_to_be_thread
 
         #while futures:
         for future in concurrent.futures.as_completed(futures):
+
+                try:
+                    data = future.result()
+                except Exception as exc:
+                    print(f' generated ab exception : {exc}')
+                else:
+                    print(' data : {data}')
                 
                 print(f'finish futures : {future}')
                 futures.remove(future)

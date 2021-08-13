@@ -46,10 +46,12 @@ def el_search_for_package_tree(query):
 def upsert_tree_in_el_search(tree_dic):
     # document type (string)
     doc_type= "doc"
+    # doc_type= "package_tree_type"
     client = get_client()
     response = client.update(
         settings.ES_INDEX,
-        id = tree_dic['npm_name'],
+        id = tree_dic['id'],
+        # id = tree_dic['npm_name'],  or this didnt decide yet
         body = {
              doc_type : tree_dic,
             'doc_as_upsert':True,         
@@ -61,3 +63,30 @@ def get_packages_tree_count():
     client = get_client()
     client.indices.refresh(settings.ES_INDEX)
     return client.cat.count(settings.ES_INDEX, params={"format": "json"})
+
+def get_top_most_hits():
+    """
+        will return 10 top hits, unless provides otherwise 
+    """
+
+    
+    client =  get_client()
+    result = client.search(index=settings.ES_INDEX )
+
+    #return result
+    #print(f' \n  result : {result}  \n')
+
+    a = result['hits']['hits']
+    # print(f' result: \n {a}')
+
+    #return a
+
+    list_r = []
+    for h in result['hits']['hits']:
+        #b= h['_source']
+        print(h['_source']['npm_name'])
+        list_r.append(h['_source']['npm_name'])
+
+    print(f'list_r : {list_r}' )
+    return {'list_r': list_r}
+

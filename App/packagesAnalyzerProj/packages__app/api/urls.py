@@ -19,5 +19,14 @@ urlpatterns = [
          name="count-npm-pacakges-and-dep_packages"),
 
 
+         path("top_doc_pacakges_elastic/", 
+         kv.TopPackagesElastic.as_view(),
+         name="top-doc-pacakges-elastic"),
+
+
+
+         
+
+
          
     ]

@@ -10,7 +10,7 @@ from rest_framework import filters # we will use for searching
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.renderers import JSONRenderer
-from core.elastic_service import get_packages_tree_count
+from core.elastic_service import get_packages_tree_count, get_top_most_hits
 
 class NpmPackageView(viewsets.ModelViewSet):
     serializer_class = NpmPackageSerializer
@@ -89,3 +89,21 @@ class NpmAndNpmDepCounts(APIView):
         except:
             print('error in class NpmAndNpmDepCounts(APIView):')
             return Response({})
+
+
+class TopPackagesElastic(APIView):
+    """
+        return topm most hits of packages
+    """
+
+    def get(self, request, format=None):
+        try:
+
+            doc_top_hits = get_top_most_hits()
+
+            #print(f' doc_top_hits: { doc_top_hits}  ')
+            return Response( doc_top_hits)
+        except:
+            print('error in class TopPackagesElastic(APIView):')
+            return Response({})
+

@@ -4,6 +4,10 @@
 The project will search for package in npmjs and will insert  to DB, and could be searach by 1)ElasticSearch 2)DB-postgres 3)api- https://registry.npmjs.org/{package_name}/latest  .  
 Each package will show also his dependency.
 
+### Remote Npmjs API/Scraping:  
+**Best approach is to Clone whole NPM metadata DB server with IT tools**
+we have api call limit. so, i wont add threading when scraping, or if i will add it will be a few (and none recursivly).     
+
 Stack: Docker - Postgres -  Celery - Django  - React - Flower - ElasticSearch
 
 need to have:
@@ -14,11 +18,7 @@ sudo docker-compose -f "docker-compose.yml" up -d --build
 Note:
 dont build if data directory exists. could be acheived with : sudo rm -rf data  
 
-~~In elasticsearch container:
-in shell post ->   
- curl -XPUT 'localhost:9200/elastic_packages_tree?pretty'  
-The command will make index (that will correlate to index in settings file)~~ 
-checking every  search in code and create if not exists, need to change to make on server restart, or on elasticsearch image built.   
+ 
 
 
 
@@ -54,4 +54,17 @@ with:  https://steemit.com/utopian-io/@jfuenmayor96/show-a-loading-animation-whi
 - ~~block searching all  Npm Packages in Back end - to change from viewsets in packages__app/api/view ...~~( not matter now)
 - logging on DB or on file
 - ~~async function fetch on Front end.~~ 
+
+~~In elasticsearch container:
+in shell post ->   
+ curl -XPUT 'localhost:9200/elastic_packages_tree?pretty'  
+The command will make index (that will correlate to index in settings file)~~ 
+checking every  search in code and create if not exists, need to change to make on server restart, or on elasticsearch image built.  
+
+
+Elastic :   
+   >showing Documents in index:  
+    >>  http://localhost:9200/elastic_packages_tree/_search     
+
+
 

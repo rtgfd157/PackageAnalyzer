@@ -52,8 +52,10 @@ services:
       context: ./App/packagesAnalyzerProj/frontend
       dockerfile: DockerfileFrontEnd.Dockerfile
     volumes:
-      - '.:/App/packagesAnalyzerProj/frontend'
-      - '/App/packagesAnalyzerProj/frontend/node_modules'
+      #- '.:/frontend'
+      # - './node_modules:/frontend/node_modules'
+      - './App/packagesAnalyzerProj/frontend:/frontend'
+      - './App/packagesAnalyzerProj/frontend/node_modules:/frontend/node_modules'
     ports:
       - 3000:3000
     environment:
@@ -61,6 +63,7 @@ services:
     depends_on:
       - web
     command: ["npm", "start" ]
+    stdin_open: true
       
 
 
@@ -85,7 +88,7 @@ services:
     #image: docker.elastic.co/elasticsearch/elasticsearch:7.14.0
     build: 
       context: ./Dockerfiles
-      dockerfile: Dockerfile-ElasticSearch.Dockerfile
+      dockerfile: DockerfileElasticSearch.Dockerfile
     container_name: elasticsearch
     environment:
       - xpack.security.enabled=false
