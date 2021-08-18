@@ -6,6 +6,8 @@ import {
 } from 'reactstrap';
 
 
+// document.querySelectorAll(" p  ") in browser console
+
 class AboutComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -20,14 +22,14 @@ class AboutComponent extends React.Component {
       <div style={{ margin: '10px' }}>
         <h2 >  About  : </h2>
 
-        <a href="https://github.com/rtgfd157/PackageAnalyzer/" target="_blank">Link: Project in GitHub    </a>
+        <a href="https://github.com/rtgfd157/PackageAnalyzer/" target="_blank" rel="noreferrer">Link: Project in GitHub    </a>
 
         <Card style={this.Styling}>
           <CardBody>
             <CardTitle tag="h5">What this project do?</CardTitle>
             <CardSubtitle tag="h6" className="mb-2 text-muted">The project will search for npm package</CardSubtitle>
 
-            <CardText > Searching by:
+            <CardText > Searching by: </CardText>
 
               <ListGroup>
                 <ListGroupItem style={{ textAlign: "left" }}>1) ElasticSearch </ListGroupItem>
@@ -36,7 +38,7 @@ class AboutComponent extends React.Component {
 
               </ListGroup>
 
-              <u> Each package will show also his dependency</u>.</CardText>
+              <CardText >  <u> Each package will show also his dependency</u>.</CardText>
           </CardBody>
 
 

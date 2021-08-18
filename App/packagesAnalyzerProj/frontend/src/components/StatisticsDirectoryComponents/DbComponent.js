@@ -48,7 +48,7 @@ class DbComponent extends React.Component {
                         <CardTitle tag="h5"> <u> DB npm package And npm Dependencies </u></CardTitle>
                         <CardSubtitle tag="h6" className="mb-2 text-muted">Counting of NpmPackage And NpmPackageDependecy Models</CardSubtitle>
 
-                        <CardText > Result:
+                        <CardText > Result: </CardText>
 
                             <ListGroup>
                                 <ListGroupItem style={{ textAlign: "left" }}> Count of Rows npm: {this.state.npm_count} </ListGroupItem>
@@ -56,8 +56,16 @@ class DbComponent extends React.Component {
 
                             </ListGroup>
 
-                            <u>  Npm rows & Npm Dep rows </u>
-                            <u> http://127.0.0.1:8000/api/count_npm_pacakges_and_dep_packages/</u></CardText>
+                            <ListGroup>
+                                <ListGroupItem>
+                                        Npm rows & Npm Dep rows 
+                                </ListGroupItem>
+
+                                <ListGroupItem>
+                                        http://127.0.0.1:8000/api/count_npm_pacakges_and_dep_packages/
+                                </ListGroupItem>
+                            </ListGroup>
+
                     </CardBody>
 
 

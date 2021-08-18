@@ -31,3 +31,6 @@ celerybeat-schedule.*
 __pycache__/*
 /App/packagesAnalyzerProj/packages__app/__pycache__/*
 /App/packagesAnalyzerProj/__pycache__/*
+/App/packagesAnalyzerProj/packages__app/Helper/__pycache__/*
+/App/packagesAnalyzerProj/packages__app/api/__pycache__/*
+/App/packagesAnalyzerProj/core/__pycache__/*

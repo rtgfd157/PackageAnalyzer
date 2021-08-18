@@ -22,18 +22,18 @@ class ElasticSearchComponent extends React.Component {
 
     async componentDidMount() {
        let  data = await  this.fetch_data(this.adress_search_el_packages_tree_count );
-       console.log(' *****1***** ')
+       //console.log(' *****1***** ')
        if (data){
-        console.log('data : '+ data);
+       // console.log('data : '+ data);
          this.setState({ el_pack_count : data[0]});
        }else{
         this.setState({ el_pack_count : '---'});
        }
 
-       console.log(' *****4***** ')
+       //console.log(' *****4***** ')
        let  data_packages = await  this.fetch_data(this.adress_top_packages);
        if (data_packages){
-        console.log('data_packages : '+ data_packages);
+        //console.log('data_packages : '+ data_packages);
          this.setState({ top_packages : data_packages['list_r']});
        }else{
          console.log('emptyyy ');
@@ -64,23 +64,25 @@ class ElasticSearchComponent extends React.Component {
          <CardTitle tag="h5"><u> Elastic Search  </u></CardTitle>
          <CardSubtitle tag="h6" className="mb-2 text-muted">Number of package Trees in ElasticSearch.</CardSubtitle>
 
-           <CardText > Result: 
+           <CardText > Result:   </CardText>
            
                <ListGroup>
      <ListGroupItem style={{textAlign:"left"}}> Number of Packages in ElasticSearch Server: {this.state.el_pack_count} </ListGroupItem>
    
        </ListGroup>
-               
-              <u>  http://localhost:9200/elastic_packages_tree/_mapping/?pretty </u>
-              <u>  http://127.0.0.1:8000/api/count_doc_pacakges_elastic/</u></CardText>
+       <ListGroup>
+       <ListGroupItem > http://localhost:9200/elastic_packages_tree/_mapping/?pretty  </ListGroupItem>
+       <ListGroupItem >  http://127.0.0.1:8000/api/count_doc_pacakges_elastic/ </ListGroupItem>
+       </ListGroup>
+
+       
               
               
               {  this.state.top_packages.length > 0  &&  <CardTitle tag="h6"><u>  Top Packages:   </u></CardTitle> }    
-       <CardText> 
 
         
        <ElasticTopHitPackages packages = {this.state.top_packages} />
-       </CardText>
+       
         
        
        

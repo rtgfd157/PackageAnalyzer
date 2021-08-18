@@ -1,5 +1,7 @@
 import React from 'react';
-
+import {
+  ListGroup, ListGroupItem 
+} from 'reactstrap';
 
 const ElasticTopHitPackages = ({ packages = [] }) => {
 
@@ -7,18 +9,14 @@ const ElasticTopHitPackages = ({ packages = [] }) => {
   return (
     <>
       <div>
-        <ul>
-
+        <ListGroup>
           {packages.map((data, index) => {
             if (data) {
 
               return (
                 <div key={data.id}>
                   
-                  <li> {data}</li> 
-
-
-
+                  <ListGroupItem> {data}</ListGroupItem> 
                 </div>
               )
             }
@@ -28,7 +26,8 @@ const ElasticTopHitPackages = ({ packages = [] }) => {
 
 
 
-        </ul>
+      </ListGroup>
+
       </div>
     </>
   );
