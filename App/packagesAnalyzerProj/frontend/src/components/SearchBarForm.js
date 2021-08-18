@@ -7,7 +7,7 @@ const SearchBar = ({handleSubmit , handleChange , search_word }) => {
   const ButtonStyle = {borderRadius: '8px' ,padding:"0.4rem"};
   return (
     
-    <form  style={BarStylingForm} onSubmit={handleSubmit}>
+    <form data-testid="search-bar-1"  style={BarStylingForm} onSubmit={handleSubmit}>
         <label> 
           <input 
           style={BarStyling}

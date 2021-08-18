@@ -139,7 +139,7 @@ class SearchPage extends React.Component {
 
   render() {
     return (
-      <div style={{ padding: "left" }}>
+      <div  data-testid="search-page-1" style={{ padding: "left" }}>
       
 
       <SearchBar handleSubmit= {this.handleSubmit} handleChange= {this.handleChange}  search_word = {this.state.search_word}  /> 
