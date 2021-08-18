@@ -1,6 +1,9 @@
 
 # Package Analyzer Project:
 
+** Notice **
+**calling npmjs https://registry.npmjs.org/keyword/latest is being Throttling by them, so when doing search write package with little dependecies ...**
+
 The project will search for package in npmjs and will insert  to DB, and could be searach by 1)ElasticSearch 2)DB-postgres 3)api- https://registry.npmjs.org/{package_name}/latest  .  
 Each package will show also his dependency.
 

@@ -1,7 +1,10 @@
 import React from 'react';
 import PackageSearchResult from './PackageSearchResult';
 import PackageComponent from './PackageComponent';
-import Loader from 'react-loader'; // fetch symbol animation
+//import Loader from 'react-loader'; // fetch symbol animation
+//import Loader from "react-loader-spinner";
+
+import LoaderSpin from './LoaderSpin';
 import SearchBar from './SearchBarForm';
 
 class SearchPage extends React.Component {
@@ -84,7 +87,7 @@ class SearchPage extends React.Component {
         this.setState({ pack_data : []});
           this.setState( { dep_data : [] });
           this.setState( { npm_name : '' });
-        console.log('error in fetch');
+        console.log('error in fetch'+ error);
         throw(error);
         
         })
@@ -144,7 +147,7 @@ class SearchPage extends React.Component {
 
       <SearchBar handleSubmit= {this.handleSubmit} handleChange= {this.handleChange}  search_word = {this.state.search_word}  /> 
 
-      { this.state.is_fetching  && <Loader/>}
+      { this.state.is_fetching  && <LoaderSpin/>}
 
       <PackageSearchResult   
       npm_name={this.state.tree_data.npm_name}
