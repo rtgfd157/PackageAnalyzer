@@ -34,3 +34,4 @@ __pycache__/*
 /App/packagesAnalyzerProj/packages__app/Helper/__pycache__/*
 /App/packagesAnalyzerProj/packages__app/api/__pycache__/*
 /App/packagesAnalyzerProj/core/__pycache__/*
+App/packagesAnalyzerProj/packages__app/tests/__pycache__/*

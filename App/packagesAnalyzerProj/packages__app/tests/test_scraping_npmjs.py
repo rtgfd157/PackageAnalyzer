@@ -14,7 +14,8 @@ class scraping_Test(TestCase):
         #np_o= NpmPackage.objects.create(npm_name="test1", version="0.0.1")
         #NpmPackageDependecy.objects.create(npm_package=np_o , npm_package_dep_name="test1_dep", version="0.0.2")
 
-        self.express =scrape_npmjs.start_scraping_npmjs_for_word("express")
+        self.express =scrape_npmjs.start_scraping_npmjs_for_package("express")
+        self.should_empty =scrape_npmjs.start_scraping_npmjs_for_package("fdrdhjgdrejcfghgf")
         
 
 
@@ -23,14 +24,19 @@ class scraping_Test(TestCase):
         #test page not reached  not added
         # r =scrape_npmjs.start_scraping_npmjs_for_word("fjfghfhgfstrhghyth")
 
-        # self.assertEqual(None,  r )
+        self.assertEqual(None,  self.should_empty )
 
         # test added 
-        l = NpmPackage.objects.all()  
-        self.assertTrue( len(l)>0 )
-        print(f'\n \n ggg - {l} ')
-        l = NpmPackageDependecy.objects.all()
-        self.assertTrue( len(l)>0 )
+        #print(f'self.express:{self.express} ')
+
+        # l = NpmPackage.objects.all()  
+        # print(f' \n l:{l}  \n')
+        # self.assertTrue( len(l)>0 )
+
+        # print(f'\n \n ggg - {l} ')
+        # l = NpmPackageDependecy.objects.all()
+        # self.assertTrue( len(l)>0 )
+        self.assertTrue(self.express)
 
 
         
