@@ -28,9 +28,10 @@ jobs:
       # Runs a single command using the runners shell
       - name: building images
         run: docker-compose -f "docker-compose.yml" up -d --build
+
       - name: sleep for Frontend dependecies install and elasticsearch server being up
         run: sleep 300s
-          shell: bash
+        shell: bash
 
 
       - name: Check running containers
