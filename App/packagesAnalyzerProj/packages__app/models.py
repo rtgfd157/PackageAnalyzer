@@ -6,9 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
 from django.core import serializers
-from django.shortcuts import get_object_or_404
 from django.http import Http404
-from packages__app.Helper.tree_build_helper import from_node_to_dic
 from packages__app.Helper.threading_helper import start_threading_scrap_insert
 import threading
 
@@ -26,23 +24,14 @@ class NpmPackage(models.Model):
     def __str__(self):
         return self.npm_name 
 
-    def filter_search_npm_package_in_cach_or_db_or_api(self, search_word):
-        """
-            search the word in db if not, in api request to npmjs.com
-            need to implement caching in elasticsearch
-        """
-
-        # query our db
+    def check_if_package_on_db(self,search_word):
         queryset = NpmPackage.objects.filter(npm_name=search_word)
         if  queryset.exists():
-            return queryset 
-        
-        else:
-            self.adding_scarp_packages_and_package_dep(search_word)
-            return NpmPackage.objects.filter(npm_name=search_word)
+            return True
+        return False
 
-
-    def adding_scarp_packages_and_package_dep(self, search_word):
+    @staticmethod
+    def adding_scarp_packages_and_package_dep( search_word):
         """
             will scrap https://registry.npmjs.org/  var   /latest
 
@@ -61,61 +50,10 @@ class NpmPackage(models.Model):
 
             ob=  NpmPackageDependecy()
             ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
-        
 
-    def check_if_package_on_db(self,search_word):
-        queryset = NpmPackage.objects.filter(npm_name=search_word)
-        if  queryset.exists():
-            return True
-        return False
+    
 
-    def make_tree_start(self,search_word):
-        """
-            making recursive tree
-            {  npm_name:val , version: val2 , id: val3, dependencies: [  list[0], list[] ]    }
-
-            each node will have the above shape
-        """
-
-        if not self.check_if_package_on_db(search_word):
-            return NpmPackage()
-        
-        q = self.populate_tree(search_word,[],0)
-        return q
-
-    def populate_tree(self, keyword, keyword_search_list =[],loop_number =0):
-        """
-           node_parent in order to  check  circular call parent->child->parent
-           keyword_search_list  - all search word used on branch
-        """
-
-        try:
-            node = get_object_or_404(NpmPackage, npm_name=keyword)
-        except NpmPackage.DoesNotExist:
-            raise Http404("Given NpmPackage query not found....")
-
-        dic = from_node_to_dic(node) # return dictionary from NpmPackage object
-        
-        npd_query_set =  NpmPackageDependecy.objects.filter(npm_package= node)
-
-        deep_npd_qs= []
-        for node_dep in npd_query_set :
-
-            if not ( node_dep.npm_package_dep_name in keyword_search_list): 
-                # check for not making cyclic recursion such in "api" npm search  d->es5-ext->es6-iterator->d ....
-                keyword_search_list.append( node_dep.npm_package_dep_name )
-
-                # for passing keyword_search_list as value and not refrence [:]
-                q = self.populate_tree(node_dep.npm_package_dep_name, keyword_search_list[:], loop_number+1 )
-                
-                if  q:
-                    deep_npd_qs.append(q)
-            else:
-                print(f' loop number: {loop_number}')
-                print(f'  node_dep.npm_package_dep_name  {node_dep.npm_package_dep_name } in keyword list: {len(keyword_search_list)}')
-                
-        dic['dependencies'] = deep_npd_qs
-        return dic
+    
 
 
 class NpmPackageDependecy(models.Model):
@@ -182,5 +120,5 @@ class NpmPackageDependecy(models.Model):
         try:
             ob  = NpmPackage.objects.get(npm_name=search_word)
         except ObjectDoesNotExist:
-            ob = NpmPackage()
-            ob.adding_scarp_packages_and_package_dep(search_word)
+            
+            NpmPackage.adding_scarp_packages_and_package_dep(search_word)
