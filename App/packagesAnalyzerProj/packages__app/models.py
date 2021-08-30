@@ -24,7 +24,8 @@ class NpmPackage(models.Model):
     def __str__(self):
         return self.npm_name 
 
-    def check_if_package_on_db(self,search_word):
+    @staticmethod
+    def check_if_package_on_db(search_word):
         queryset = NpmPackage.objects.filter(npm_name=search_word)
         if  queryset.exists():
             return True
@@ -122,3 +123,34 @@ class NpmPackageDependecy(models.Model):
         except ObjectDoesNotExist:
             
             NpmPackage.adding_scarp_packages_and_package_dep(search_word)
+
+
+
+class NpmSecurityPackageDeatails(models.Model):
+    '''
+        this will act as data that will hold fields for ML algo
+
+        Attributes:
+        npm_package - NpmPackage model FK
+        number_of_maintainers - of npm_package
+        unpackedsize - size of the package
+        license - kind of license of the package e.g -(MIT ...)
+        is_exploite - if npm audit find the package have exploite
+        num_high_severity - npm audit number of  high severity bugs in program 
+        num_medium_severity - npm audit number of  medium severity bugs in program
+        num_low_severity - npm audit number of  low severity bugs in program
+    '''
+
+    npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
+    number_of_maintainers = models.IntegerField(default = 1 , null =True)
+    unpackedsize = models.IntegerField(null =True) # IntegerField - can hold up to 268 MB
+    license = models.CharField(max_length=36)
+    updated_at = models.DateField( auto_now=True)
+    is_exploite = models.BooleanField()
+    num_high_severity = models.IntegerField(default = 0 , null =True, blank =True)
+    num_medium_severity = models.IntegerField(default = 0 , null =True, blank =True)
+    num_low_severity = models.IntegerField(default = 0 , null =True, blank =True)
+
+
+    def __str__(self):
+        return   " security package model: " + self.npm_package

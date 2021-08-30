@@ -14,10 +14,10 @@ lock = threading.Lock()
 # function that will return package tree
 # made on diff page because, its have lot of code, so i seperate it fro model logic.
 
-
+# need tp make logic clear
 def start_tree(search_word, library_name):
     
-    str_report = ''
+    
     
     ans= el_search_for_package_tree(search_word)
     #print(f' \n \n \n  from elastic: {ans}  \n \n')
@@ -27,27 +27,39 @@ def start_tree(search_word, library_name):
         return JsonResponse(ans, safe=False)
 
     # if package not in db will add package and dependecy recursivlly  - base on old model function  ... need to refine logic
-    filter_search_npm_package_in_cach_or_db_or_api(search_word)
+    #filter_search_npm_package_in_cach_or_db_or_api(search_word)
 
 
-    queryset = NpmPackage()
+    
+    
 
+    if not NpmPackage.check_if_package_on_db(search_word):
+        
+        NpmPackage.adding_scarp_packages_and_package_dep(search_word)
 
-    query_exists = queryset.check_if_package_on_db(search_word)
-    print(f' query_exsist: {query_exists}')
-    if not query_exists:
-        print(f'return from db')
-        return JsonResponse({}, safe=False)
+        
+
+        if not NpmPackage.check_if_package_on_db(search_word):
+
+            return JsonResponse({}, safe=False)
+        else:
+            print(f'query_exsist in db after scrap')
+            return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word)
+
     else:
+        print(f' query_exsist in db ')
+        return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word)
+        
 
-        q = make_tree_start(search_word)
-        print(f'return from api')
         #print(f' q:::::  {q}')
-        upsert_tree_in_el_search(q)
     #q = serializers.serialize('python', q)
     #print( f'length: {len(q)} ')
     #print(f' \n \n  type:{type(q)}  q: {q} \n \n ')
     #return HttpResponse(q)
+        
+def found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word):
+    q = make_tree_start(search_word)
+    upsert_tree_in_el_search(q)
     return JsonResponse(q, safe=False)
 
 
@@ -68,21 +80,6 @@ def make_tree_start(search_word):
         q = populate_tree(search_word,[],0)
         return q
 
-def filter_search_npm_package_in_cach_or_db_or_api(search_word):
-        """
-            search the word in db if not, in api request to npmjs.com
-            need to implement caching in elasticsearch
-        """
-
-        # query our db
-        queryset = NpmPackage.objects.filter(npm_name=search_word)
-        if  queryset.exists():
-            return queryset 
-        
-        else:
-
-            NpmPackage.adding_scarp_packages_and_package_dep(search_word)
-            return NpmPackage.objects.filter(npm_name=search_word)
 
 def populate_tree( keyword, keyword_search_list =[],loop_number =0):
         """
