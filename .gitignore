@@ -41,3 +41,6 @@ __pycache__/*
 /App/packagesAnalyzerProj/packages__app/api/__pycache__/*
 /App/packagesAnalyzerProj/core/__pycache__/*
 App/packagesAnalyzerProj/packages__app/tests/__pycache__/*
+App/packagesAnalyzerProj/packages__app/migrations/*
+App/packagesAnalyzerProj/packages__app/migrations/__pycache__/*
+App/packagesAnalyzerProj/node_modules/*

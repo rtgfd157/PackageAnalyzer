@@ -2,8 +2,8 @@
 from django.http import response
 from django.shortcuts import render
 from rest_framework import viewsets
-from .serializers import NpmPackageSerializer, NpmPackageDependecySerializer
-from packages__app.models import NpmPackage, NpmPackageDependecy
+from .serializers import NpmPackageSerializer, NpmPackageDependecySerializer, NpmSecurityPackageDeatailsSerializer
+from packages__app.models import NpmPackage, NpmPackageDependecy, NpmSecurityPackageDeatails
 from rest_framework import generics
 
 from rest_framework import filters # we will use for searching
@@ -52,6 +52,11 @@ class NpmPackageDependecyView(viewsets.ModelViewSet):
         queryset = NpmPackageDependecy()
         return queryset.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)     
 
+
+class NpmSecurityPackageDeatailsView(viewsets.ModelViewSet):
+    serializer_class = NpmSecurityPackageDeatailsSerializer
+
+    queryset = NpmSecurityPackageDeatails.objects.all()
         
 class ElasticSearchCountDocuments(APIView):
     """

@@ -18,7 +18,10 @@ services:
   web:
     build: .
     #command: python3 manage.py runserver 0.0.0.0:8000
-    command: bash -c "python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000"
+
+    #command: bash -c "sudo ./start_server.sh"
+    command: bash -c " npm install npm-registry-fetch@11.0.0 --save && python3 manage.py makemigrations && python3 manage.py migrate --noinput && python3 manage.py runserver 0.0.0.0:8000"
+   
     volumes:
       - .:/App/
     #restart: always

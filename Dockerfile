@@ -13,7 +13,7 @@ RUN  yes |apt-get install python3-pip
 # npm node and libraray for using  npm-registry-fetch in NpmSecurity model fetching info
 RUN  yes | apt-get install nodejs
 RUN  yes | apt-get install npm
-RUN  npm install npm-registry-fetch@11.0.0 --save 2>&1 > install_docker.log || echo "There were failing in npm i -g npm-registry-fetch  !"
+RUN  yes | npm install npm-registry-fetch@11.0.0 --save 2>&1 > install_docker.log || echo "There were failing in npm i -g npm-registry-fetch  !"
 
 
 # https://stackoverflow.com/questions/30716937/dockerfile-build-possible-to-ignore-error

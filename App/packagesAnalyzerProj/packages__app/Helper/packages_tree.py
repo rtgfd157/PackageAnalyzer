@@ -1,8 +1,8 @@
-from  packages__app.models import NpmPackage, NpmPackageDependecy
+from  packages__app.models import NpmPackage, NpmPackageDependecy, NpmSecurityPackageDeatails
 from core.elastic_service import el_search_for_package_tree, upsert_tree_in_el_search
 from django.http import JsonResponse
 from django.http import HttpResponse
-from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package_dependencies, start_scraping_npmjs_for_package
+from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package, returning_dic_from_pack_security_dic
 from django.shortcuts import get_object_or_404
 from django.http import Http404
 from packages__app.Helper.tree_build_helper import from_node_to_dic
@@ -26,21 +26,10 @@ def start_tree(search_word, library_name):
         print(f'return from elastic')
         return JsonResponse(ans, safe=False)
 
-    # if package not in db will add package and dependecy recursivlly  - base on old model function  ... need to refine logic
-    #filter_search_npm_package_in_cach_or_db_or_api(search_word)
-
-
-    
-    
-
     if not NpmPackage.check_if_package_on_db(search_word):
         
-        NpmPackage.adding_scarp_packages_and_package_dep(search_word)
-
-        
-
+        adding_scarp_packages_and_package_dep(search_word)
         if not NpmPackage.check_if_package_on_db(search_word):
-
             return JsonResponse({}, safe=False)
         else:
             print(f'query_exsist in db after scrap')
@@ -61,8 +50,6 @@ def found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_w
     q = make_tree_start(search_word)
     upsert_tree_in_el_search(q)
     return JsonResponse(q, safe=False)
-
-
 
 def make_tree_start(search_word):
         """
@@ -118,6 +105,43 @@ def populate_tree( keyword, keyword_search_list =[],loop_number =0):
 
 
 
+def adding_scarp_packages_and_package_dep( search_word):
+    """
+        will scrap https://registry.npmjs.org/  var   /latest
 
+        and will add both npm package and dependecy package.
+        will call filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
 
+        so, all nesting will be added
+    """
+    # query npmjs api
+    ret_dic = start_scraping_npmjs_for_package(search_word)
+    print(f'return dic -{ret_dic} - name: {search_word} ')
+    if ret_dic != None:
+        npm_pack= NpmPackage(npm_name= search_word ,version=ret_dic['package_ver'] )
+        with lock:
+            npm_pack.save()
+
+        nspd_dic = returning_dic_from_pack_security_dic(search_word, ret_dic['package_ver'])
+
+        # print(f'@@ {nspd_dic}  -- {type(nspd_dic)} ')
+
+        if  nspd_dic.get('is_exploite') :
+
+            nspd =  NpmSecurityPackageDeatails(npm_package =  npm_pack, number_of_maintainers = ret_dic['number_of_maintainers'],
+                    unpackedsize = ret_dic.get('unpackedSize') , license =  ret_dic.get('license') ,
+                    is_exploite  =  nspd_dic.get('is_exploite'), num_info_severity =  nspd_dic.get('num_info_severity') ,
+                    num_low_severity =  nspd_dic.get('num_low_severity') ,
+                     num_moderate_severity =  nspd_dic.get('num_moderate_severity'), num_high_severity = nspd_dic.get('num_high_severity'),
+                     num_critical_severity =  nspd_dic.get('num_critical_severity') )
+            with lock:
+                nspd.save()
+        else:
+            nspd =  NpmSecurityPackageDeatails(npm_package =  npm_pack, number_of_maintainers = ret_dic['number_of_maintainers'],
+                                                is_exploite  =nspd_dic.get('is_exploite'), unpackedsize = ret_dic.get('unpackedSize') )
+            with lock:
+                nspd.save()  
+
+        ob=  NpmPackageDependecy()
+        ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word, ret_dic['dependencies'])
 

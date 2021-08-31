@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models.fields.mixins import NOT_PROVIDED
 from django.db.models.query_utils import Q
-from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package_dependencies, start_scraping_npmjs_for_package
+from packages__app.Helper.scrape_npmjs import  start_scraping_npmjs_for_package
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ObjectDoesNotExist
 from itertools import chain
@@ -31,26 +31,8 @@ class NpmPackage(models.Model):
             return True
         return False
 
-    @staticmethod
-    def adding_scarp_packages_and_package_dep( search_word):
-        """
-            will scrap https://registry.npmjs.org/  var   /latest
-
-            and will add both npm package and dependecy package.
-            will call filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
-
-            so, all nesting will be added
-        """
-        # query npmjs api
-        version = start_scraping_npmjs_for_package(search_word)
-        print(f'version-{version} - name: {search_word} ')
-        if version != None:
-            queryset= NpmPackage(npm_name= search_word ,version=version )
-            with lock:
-                queryset.save()
-
-            ob=  NpmPackageDependecy()
-            ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
+    
+    
 
     
 
@@ -70,7 +52,7 @@ class NpmPackageDependecy(models.Model):
     def __str__(self):
         return self.npm_package_dep_name + " " + self.version
 
-    def filter_search_npm_package_dep_in_cach_or_db_or_api(self, search_word):
+    def filter_search_npm_package_dep_in_cach_or_db_or_api(self, search_word, dependencies):
         """
             search the word in db if not, in api request to npmjs.com
             need to implement caching in elasticsearch
@@ -84,12 +66,12 @@ class NpmPackageDependecy(models.Model):
         
         else:
             # query npmjs api
-            dependecies = start_scraping_npmjs_for_package_dependencies(search_word)
+            
             # print(f'dependecies-{dependecies} ')
-            if dependecies != None:
+            if dependencies != None:
                 # will act as start and ending point for other threads
                 #start_end_threading_point(self.insert_package_dependecy_bulk_from_scraping , dependecies, search_word )
-                self.insert_package_dependecy_bulk_from_scraping(dependecies, search_word)
+                self.insert_package_dependecy_bulk_from_scraping(dependencies, search_word)
                  
             return NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word)
 
@@ -121,8 +103,8 @@ class NpmPackageDependecy(models.Model):
         try:
             ob  = NpmPackage.objects.get(npm_name=search_word)
         except ObjectDoesNotExist:
-            
-            NpmPackage.adding_scarp_packages_and_package_dep(search_word)
+            from packages__app.Helper.packages_tree import adding_scarp_packages_and_package_dep as ad
+            ad(search_word)
 
 
 
@@ -137,8 +119,9 @@ class NpmSecurityPackageDeatails(models.Model):
         license - kind of license of the package e.g -(MIT ...)
         is_exploite - if npm audit find the package have exploite
         num_high_severity - npm audit number of  high severity bugs in program 
-        num_medium_severity - npm audit number of  medium severity bugs in program
+        num_moderate_severity - npm audit number of  moderate severity bugs in program
         num_low_severity - npm audit number of  low severity bugs in program
+        num_critical_severity - npm audit number of  critical severity bugs in program
     '''
 
     npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
@@ -148,9 +131,10 @@ class NpmSecurityPackageDeatails(models.Model):
     updated_at = models.DateField( auto_now=True)
     is_exploite = models.BooleanField()
     num_high_severity = models.IntegerField(default = 0 , null =True, blank =True)
-    num_medium_severity = models.IntegerField(default = 0 , null =True, blank =True)
+    num_moderate_severity = models.IntegerField(default = 0 , null =True, blank =True)
     num_low_severity = models.IntegerField(default = 0 , null =True, blank =True)
-
+    num_info_severity = models.IntegerField(default = 0 , null =True, blank =True)
+    num_critical_severity = models.IntegerField(default = 0 , null =True, blank =True)
 
     def __str__(self):
         return   " security package model: " + self.npm_package
