@@ -3,6 +3,7 @@ import React from 'react';
 import SearchPage from './components/SearchPage';
 import StatsComponent  from  './components/StatisticsDirectoryComponents/StatsComponent';
 import AboutComponent from './components/AboutComponent';
+import NpmSecurityToTable from './components/NpmSecurityComponents/NpmSecurityToTable';
 import './App.css';
 import Home from './components/Home';
 
@@ -33,6 +34,9 @@ function App() {
             
             
               <Link style={Styling} to="/stats_page">Stats</Link>
+              <Link style={Styling} to="/npm_security_table">Npm Security To Table</Link>
+
+              
               </div>
 
 
@@ -48,6 +52,9 @@ function App() {
           </Route>
           <Route path="/stats_page">
             <StatsComponent />
+          </Route>
+          <Route path="/npm_security_table">
+            <NpmSecurityToTable />
           </Route>
           <Route path="/">
             <Home />

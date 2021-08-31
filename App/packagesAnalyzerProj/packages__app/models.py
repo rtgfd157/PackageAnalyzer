@@ -122,6 +122,7 @@ class NpmSecurityPackageDeatails(models.Model):
         num_moderate_severity - npm audit number of  moderate severity bugs in program
         num_low_severity - npm audit number of  low severity bugs in program
         num_critical_severity - npm audit number of  critical severity bugs in program
+        num_info_severity - ...
     '''
 
     npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
@@ -138,3 +139,7 @@ class NpmSecurityPackageDeatails(models.Model):
 
     def __str__(self):
         return   " security package model: " + self.npm_package
+
+    def return_version_npm(self):
+        npm_pack = NpmPackage.objects.get(npm_name = self.npm_package)
+        return npm_pack.version

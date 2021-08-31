@@ -56,7 +56,7 @@ class NpmPackageDependecyView(viewsets.ModelViewSet):
 class NpmSecurityPackageDeatailsView(viewsets.ModelViewSet):
     serializer_class = NpmSecurityPackageDeatailsSerializer
 
-    queryset = NpmSecurityPackageDeatails.objects.all()
+    queryset = NpmSecurityPackageDeatails.objects.all().order_by('-is_exploite')
         
 class ElasticSearchCountDocuments(APIView):
     """
