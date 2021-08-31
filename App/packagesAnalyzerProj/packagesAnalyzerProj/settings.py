@@ -190,7 +190,7 @@ CELERY_TIMEZONE = 'Asia/Jerusalem'
 CELERY_BEAT_SCHEDULE = {
     "celery_task_updating_stockdaydata": {
         "task": "packages__app.tasks.celery_task_updating_npm_packages_and_dependecies",
-                "schedule": crontab(minute=0,hour="*/24"),
+                "schedule": crontab(minute=0,hour=0, month= '*/2'),
     }                       
 }
 
