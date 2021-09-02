@@ -19,11 +19,14 @@ from rest_framework import routers
 from rest_framework.routers import DefaultRouter,SimpleRouter
 from django.conf import settings
 from packages__app.api.urls import routerList_packages__app
+from endpoints.api.urls import router_list_endpoints
 
 from packages__app import views
 
 router = DefaultRouter()
 router.registry.extend(routerList_packages__app.registry)
+router.registry.extend(router_list_endpoints.registry)
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),

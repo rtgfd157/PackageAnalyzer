@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'django_celery_beat',
 
 
-    'packages__app'
+    'packages__app',
+    'endpoints'
 ]
 
 MIDDLEWARE = [

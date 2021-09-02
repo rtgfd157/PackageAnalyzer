@@ -80,7 +80,7 @@ def  returning_dic_from_pack_security_dic(search_word,version):
         else:
             ret_dic['is_exploite'] =False
         
-        print (f' ret_dic: {ret_dic} ')
+        #print (f' ret_dic: {ret_dic} ')
         return ret_dic
         
     except :

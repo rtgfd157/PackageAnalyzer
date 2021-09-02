@@ -116,7 +116,7 @@ def adding_scarp_packages_and_package_dep( search_word):
     """
     # query npmjs api
     ret_dic = start_scraping_npmjs_for_package(search_word)
-    print(f'return dic -{ret_dic} - name: {search_word} ')
+    #print(f'return dic -{ret_dic} - name: {search_word} ')
     if ret_dic != None:
         npm_pack= NpmPackage(npm_name= search_word ,version=ret_dic['package_ver'] )
         with lock:

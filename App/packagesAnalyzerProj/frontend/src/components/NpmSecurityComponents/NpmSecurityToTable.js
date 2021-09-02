@@ -7,12 +7,18 @@ class NpmSecurityToTable extends React.Component {
       super(props);
       this.state = {
           data:{},
+          counnt_npm_sec : 'didnt fetch successfuly yet',
           is_mount :false
           
       };
       this.fetch_data = this.fetch_data.bind(this);
       
       this.npm_security_packages = 'http://127.0.0.1:8000/api/npm_package_security/' ; 
+      this.count_npm_security = 'http://127.0.0.1:8000/api/count_npm_security/' ; 
+      this.Styling = { padding:"0.5rem", margin: '1%'};
+
+
+      
     }
     
 
@@ -24,9 +30,12 @@ class NpmSecurityToTable extends React.Component {
          this.setState({ data : data});
          this.setState({ is_mount : true});
        }
-
-       this.Styling = { padding:"0.5rem", margin: '1%'};
-
+      
+       let  ct = await  this.fetch_data(this.count_npm_security );
+       if (data){
+        // console.log('data : '+ data);
+          this.setState({ counnt_npm_sec : ct.npm_sec_count});
+        }
        
       }
 
@@ -42,9 +51,10 @@ class NpmSecurityToTable extends React.Component {
     render() {
       if (this.state.is_mount){
       return (
-                
+                  <div>
+                    <h2> Number of Npm Securities rows in table: <u> {this.state.counnt_npm_sec} </u> </h2>
                     <MaterialTable style={this.Styling}
-                    title="Npm Security  Filtering "
+                    title="Npm Security Table: "
                     columns={[
                         { title: 'Name', field: 'npm_package' },
                         { title: 'Version', field: 'return_version_npm' },
@@ -68,7 +78,10 @@ class NpmSecurityToTable extends React.Component {
                     options={{
                         filtering: true
                     }}
-            />  )} 
+            />  
+            
+            </div>
+            )} 
 
             else{
                   return(<h2>loading ... </h2>)

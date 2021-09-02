@@ -1,8 +1,8 @@
 from django.db import models
 from django.test import TestCase
-
+import pprint
 from packages__app.Helper import scrape_npmjs 
-from packages__app.models import NpmPackageDependecy, NpmPackage
+from packages__app.models import NpmPackageDependecy, NpmPackage , NpmSecurityPackageDeatails
 
 # terminal python3 manage.py test packages__app.tests.test_scraping_npmjs.scraping_Test  --verbosity 2
 
@@ -73,6 +73,15 @@ class scraping_Test(TestCase):
         #print( f'val - {val}')
         self.assertFalse( val['is_exploite']  )
 
+
+    # def test_see_diff_between_npm_to_security(self):
+    #     ret = scrape_npmjs.start_npm_registry_fetch_for_package_security('vue','2.6.14')
+
+    #     pprint.pprint(f'\n  1) ret  {ret}\n    ')
+
+    #     ret = scrape_npmjs.returning_dic_from_pack_security_dic('vue','2.6.14')
+
+    #     pprint.pprint(f'\n 2) ret  {ret}\n    ')
 
 
 

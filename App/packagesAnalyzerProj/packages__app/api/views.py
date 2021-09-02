@@ -112,3 +112,20 @@ class TopPackagesElastic(APIView):
             print('error in class TopPackagesElastic(APIView):')
             return Response({})
 
+class NpmSEcurityCounts(APIView):
+    """
+        a view for counting packages tree in elasticsearch 
+    """
+    renderer_classes = [JSONRenderer]
+
+    def get(self, request, format=None):
+        try:
+            npm_sec_count = NpmSecurityPackageDeatails.objects.all().count()
+            #print(f'  count: {documents_counts} ')
+            
+            content = { 'npm_sec_count': npm_sec_count             
+             }
+            return Response( content)
+        except:
+            print('error in class NpmAndNpmDepCounts(APIView):')
+            return Response({})

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from .models import NpmPackage
+from .models import NpmPackage, NpmSecurityPackageDeatails , NpmPackageDependecy
 from django.http import JsonResponse
 from django.http import HttpResponse
 from .tasks import celery_task_updating_npm_packages_and_dependecies
@@ -20,4 +20,21 @@ def package_tree_search(request,search_word, library_name):
         will fetch tree of package from db
     """
     return start_tree(search_word, library_name)
+
+def test_see_diff_between_npm_to_security(self):
+        npm_sec= NpmSecurityPackageDeatails.objects.all()
+        npm_packages = NpmPackage.objects.all()
+
+        #print(f' !!!!!!!!!!!!{npm_sec}!!!!!!!!!!!!!!!!')
+
+        for pack in npm_packages:
+            #print(pack)
+            is_in_both = npm_sec.filter( npm_package__id = pack.id )
+            #print( is_in_both )
+            if not is_in_both.exists():
+                print(f'\n ----{pack}---- \n')
+            # else:
+            #     print('  ^^^^')
+
+        return HttpResponse('backkk')
 

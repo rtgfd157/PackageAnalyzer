@@ -138,7 +138,7 @@ class NpmSecurityPackageDeatails(models.Model):
     num_critical_severity = models.IntegerField(default = 0 , null =True, blank =True)
 
     def __str__(self):
-        return   " security package model: " + self.npm_package
+        return   " security package model: " + self.npm_package.npm_name
 
     def return_version_npm(self):
         npm_pack = NpmPackage.objects.get(npm_name = self.npm_package)

@@ -34,7 +34,7 @@ function App() {
             
             
               <Link style={Styling} to="/stats_page">Stats</Link>
-              <Link style={Styling} to="/npm_security_table">Npm Security To Table</Link>
+              <Link style={Styling} to="/npm_security_table">Npm Security Table</Link>
 
               
               </div>

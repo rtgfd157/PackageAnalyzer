@@ -18,15 +18,13 @@ urlpatterns = [
          kv.NpmAndNpmDepCounts.as_view(),
          name="count-npm-pacakges-and-dep_packages"),
 
+        path("count_npm_security/", 
+         kv.NpmSEcurityCounts.as_view(),
+         name="count-npm-security"),
 
          path("top_doc_pacakges_elastic/", 
          kv.TopPackagesElastic.as_view(),
          name="top-doc-pacakges-elastic"),
 
 
-
-         
-
-
-         
     ]
