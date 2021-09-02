@@ -8,7 +8,7 @@ urlpatterns = [
 
         path("packageTreeSearch/<slug:search_keyword_npm_pack>/<slug:search_keyword_version>/", 
          v.package_tree_search,
-         name="comment-create"),
+         name="search"),
 
 
          path("test_see_diff_between_npm_to_security/", 

@@ -1,3 +1,4 @@
+from sys import version
 from  packages__app.models import NpmPackage, NpmPackageDependecy, NpmSecurityPackageDeatails
 from core.elastic_service import el_search_for_package_tree, upsert_tree_in_el_search
 from django.http import JsonResponse
@@ -16,8 +17,9 @@ lock = threading.Lock()
 
 # need tp make logic clear
 def start_tree(search_word, search_keyword_version):
-     
-    
+    #print(f' before search_keyword_version : {search_keyword_version} ')
+    search_keyword_version = search_keyword_version.replace("qqq", ".")
+    #print(f' search_keyword_version : {search_keyword_version} ')
     
     ans= el_search_for_package_tree(search_word, search_keyword_version)
     #print(f' \n \n \n  from elastic: {ans}  \n \n')
@@ -29,15 +31,15 @@ def start_tree(search_word, search_keyword_version):
     if not NpmPackage.check_if_package_on_db(search_word, search_keyword_version):
         
         adding_scarp_packages_and_package_dep(search_word, search_keyword_version)
-        if not NpmPackage.check_if_package_on_db(search_word):
+        if not NpmPackage.check_if_package_on_db(search_word, search_keyword_version):
             return JsonResponse({}, safe=False)
         else:
             print(f'query_exsist in db after scrap')
-            return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word)
+            return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word, search_keyword_version)
 
     else:
         print(f' query_exsist in db ')
-        return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word)
+        return found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word, search_keyword_version)
         
 
         #print(f' q:::::  {q}')
@@ -46,12 +48,12 @@ def start_tree(search_word, search_keyword_version):
     #print(f' \n \n  type:{type(q)}  q: {q} \n \n ')
     #return HttpResponse(q)
         
-def found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word):
-    q = make_tree_start(search_word)
+def found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_word, search_keyword_version):
+    q = make_tree_start(search_word, search_keyword_version)
     upsert_tree_in_el_search(q)
     return JsonResponse(q, safe=False)
 
-def make_tree_start(search_word):
+def make_tree_start(search_word, search_keyword_version):
         """
             making recursive tree
             {  npm_name:val , version: val2 , id: val3, dependencies: [  list[0], list[] ]    }
@@ -61,21 +63,21 @@ def make_tree_start(search_word):
         
         npm_pack = NpmPackage()
 
-        if not npm_pack.check_if_package_on_db(search_word):
+        if not npm_pack.check_if_package_on_db(search_word, search_keyword_version):
             return NpmPackage()
         
-        q = populate_tree(search_word,[],0)
+        q = populate_tree(search_word, search_keyword_version,[],0)
         return q
 
 
-def populate_tree( keyword, keyword_search_list =[],loop_number =0):
+def populate_tree( keyword,search_keyword_version ,keyword_search_list =[],loop_number =0):
         """
            node_parent in order to  check  circular call parent->child->parent
            keyword_search_list  - all search word used on branch
         """
 
         try:
-            node = get_object_or_404(NpmPackage, npm_name=keyword)
+            node = get_object_or_404(NpmPackage, npm_name=keyword , version = search_keyword_version)
         except NpmPackage.DoesNotExist:
             raise Http404("Given NpmPackage query not found....")
 
@@ -91,7 +93,7 @@ def populate_tree( keyword, keyword_search_list =[],loop_number =0):
                 keyword_search_list.append( node_dep.npm_package_dep_name )
 
                 # for passing keyword_search_list as value and not refrence [:]
-                q = populate_tree(node_dep.npm_package_dep_name, keyword_search_list[:], loop_number+1 )
+                q = populate_tree(node_dep.npm_package_dep_name, node_dep.version ,keyword_search_list[:], loop_number+1 )
                 
                 if  q:
                     deep_npd_qs.append(q)

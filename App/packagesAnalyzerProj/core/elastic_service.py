@@ -28,12 +28,21 @@ def el_search_for_package_tree(search_word, search_keyword_version):
     #print(f'client : {client}')
     result = client.search(index=settings.ES_INDEX, 
     body={
-        'query':{
-            'match':{
-                'npm_name': search_word,
-                'version': '*'+search_keyword_version # for ~, ^ symbols
-            },
-        },
+        # 'query':{
+        #     'match':{
+        #         'npm_name': search_word,
+        #         'version': '*'+search_keyword_version # for ~, ^ symbols
+        #     },
+        # },
+
+        "query": {
+            "bool": {
+                "must": [
+                        {"match": {'npm_name': search_word,}},
+                        {"match": {'version': '*'+search_keyword_version }},# for ~, ^ symbols}},
+                        ]
+                    }
+                }
     })
     a = result['hits']['hits']
     # print(f' result: \n {a}')

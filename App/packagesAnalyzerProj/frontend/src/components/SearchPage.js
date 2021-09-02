@@ -12,6 +12,7 @@ class SearchPage extends React.Component {
     super(props);
     this.state = {
       search_word: '',
+      search_version: '',
        pack_data: [],
        dep_data:[],
        bad_search_message: false,
@@ -26,15 +27,24 @@ class SearchPage extends React.Component {
        // need to add logic to message_not_input
 
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange_search_word = this.handleChange_search_word.bind(this);
+    this.handleChange_search_version = this.handleChange_search_version.bind(this);
+
     this.handleSubmit = this.handleSubmit.bind(this);
+
+      
 
   }
 
 
-  async handleChange(event) {
+  async handleChange_search_word(event) {
     // this.setState({[event.target.name]: event.target.value});
     await this.setState({search_word: event.target.value});
+  }
+
+  async handleChange_search_version(event) {
+    // this.setState({[event.target.name]: event.target.value});
+    await this.setState({search_version: event.target.value});
   }
 
   /*
@@ -55,16 +65,37 @@ class SearchPage extends React.Component {
     
 
    async handleSubmit(event){
+     console.log(' ^^^ '+this.state.search_version);
     event.preventDefault();
     if (   this.check_not_empty_search_word() === false  ){
       console.log('check emptyyy');
       return 
     } 
 
+    // this.state.search_version.replace('.', '###');
+
     this.setState({ is_fetching : true});
     this.setState({ tree_data : []});
+    //search_version.replace( /./g, '###' )
+    // this.setState({ search_version , search_version.replace( /./g, '###' )  })
 
-    let p= await this.fetch_data('http://127.0.0.1:8000/api/packageTreeSearch/'+this.state.search_word+'/npmpackage/');
+    // var ver = this.state.search_version.split(/(\b.+\b)/gi);
+    var k = this.state.search_version
+    console.log(' k : '+k);
+    
+
+    let send = ''; 
+    for (var i = 0; i < k.length; i += 1) {
+      if ( k[i] === '.'){
+        send += 'qqq';
+      }else{
+        send+= k[i];
+      }
+       
+      }
+      console.log(' send: '+send);
+
+    let p= await this.fetch_data('http://127.0.0.1:8000/api/packageTreeSearch/'+this.state.search_word+'/'+send+'/');
     this.setState({ tree_data : p});
     this.setState({ is_fetching : false});
  
@@ -87,6 +118,7 @@ class SearchPage extends React.Component {
         this.setState({ pack_data : []});
           this.setState( { dep_data : [] });
           this.setState( { npm_name : '' });
+          this.setState( { search_version : '' });
         console.log('error in fetch'+ error);
         throw(error);
         
@@ -97,12 +129,13 @@ class SearchPage extends React.Component {
 ///////////////////////////////////////////////////////
         check_not_empty_search_word(){
 
-          if(  !(this.state.search_word) ){
+          if(  !(this.state.search_word) &&   !(this.state.search_version)    ){
             console.log('return false');
-            this.setState({ message_after_search : ' Please enter value'});
+            this.setState({ message_after_search : ' Please enter both inputs values'});
             this.setState({ pack_data : []});
           this.setState( { dep_data : [] });
           this.setState( { npm_name : '' });
+          this.setState( { search_version : '' });
             //this.empty_search();
           return false
         }
@@ -129,6 +162,8 @@ class SearchPage extends React.Component {
           this.setState({ pack_data : []});
           this.setState( { dep_data : [] });
           this.setState( { npm_name : '' });
+          this.setState( { search_version : '' });
+          
           this.setState( { message_after_search : 'search came without results, please try again' })
 
 
@@ -145,7 +180,12 @@ class SearchPage extends React.Component {
       <div  data-testid="search-page-1" style={{ padding: "left" }}>
       
 
-      <SearchBar handleSubmit= {this.handleSubmit} handleChange= {this.handleChange}  search_word = {this.state.search_word}  /> 
+      <SearchBar handleSubmit= {this.handleSubmit}
+       handleChange_search_word= {this.handleChange_search_word}
+       handleChange_search_version= {this.handleChange_search_version}
+       search_version = {this.state.search_version}
+         search_word = {this.state.search_word}
+         /> 
 
       { this.state.is_fetching  && <LoaderSpin/>}
 
