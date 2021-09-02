@@ -15,11 +15,11 @@ def task_view(request):
     return HttpResponse("celery task started  ... ")
 
 
-def package_tree_search(request,search_word, library_name):
+def package_tree_search(request,search_keyword_npm_pack, search_keyword_version):
     """
         will fetch tree of package from db
     """
-    return start_tree(search_word, library_name)
+    return start_tree(search_keyword_npm_pack, search_keyword_version)
 
 def test_see_diff_between_npm_to_security(self):
         npm_sec= NpmSecurityPackageDeatails.objects.all()

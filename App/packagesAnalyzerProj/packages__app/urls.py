@@ -6,7 +6,7 @@ from packages__app import views as v
 
 urlpatterns = [
 
-        path("packageTreeSearch/<slug:search_word>/<slug:library_name>/", 
+        path("packageTreeSearch/<slug:search_keyword_npm_pack>/<slug:search_keyword_version>/", 
          v.package_tree_search,
          name="comment-create"),
 

@@ -4,8 +4,8 @@ import sys
 #from packages__app.models import NpmPackage, NpmPackageDependecy
 import json
 
-def get_page_resource( search_word):
-    res = requests.get(f'https://registry.npmjs.org/{search_word}/latest')
+def get_page_resource( search_word, search_keyword_version):
+    res = requests.get(f'https://registry.npmjs.org/{search_word}/{search_keyword_version}')
     if res.status_code != 200:
         print(f' \n api not avaialable https://registry.npmjs.org/{search_word}/latest  - status code: {res.status_code}')
         return None
@@ -14,11 +14,11 @@ def get_page_resource( search_word):
 
 
 
-def start_scraping_npmjs_for_package(search_word):
+def start_scraping_npmjs_for_package(search_word, search_keyword_version):
     """
     scrape for keyword
     """
-    res = get_page_resource( search_word)
+    res = get_page_resource( search_word, search_keyword_version)
     if res == None: return None
 
     ret_dic = {}
@@ -27,7 +27,6 @@ def start_scraping_npmjs_for_package(search_word):
         dic = res.json()
 
         # if dic.get() not found is return None
-        ret_dic['package_ver']= dic.get('version') 
         ret_dic['dependencies']= dic.get('dependencies')
         ret_dic['number_of_maintainers']= len(dic.get('maintainers'))
         ret_dic['unpackedSize']= dic.get('dist').get('unpackedSize')

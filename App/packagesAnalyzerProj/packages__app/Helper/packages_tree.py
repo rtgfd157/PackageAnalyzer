@@ -15,20 +15,20 @@ lock = threading.Lock()
 # made on diff page because, its have lot of code, so i seperate it fro model logic.
 
 # need tp make logic clear
-def start_tree(search_word, library_name):
+def start_tree(search_word, search_keyword_version):
+     
     
     
-    
-    ans= el_search_for_package_tree(search_word)
+    ans= el_search_for_package_tree(search_word, search_keyword_version)
     #print(f' \n \n \n  from elastic: {ans}  \n \n')
 
     if len(ans) > 0:
         print(f'return from elastic')
         return JsonResponse(ans, safe=False)
 
-    if not NpmPackage.check_if_package_on_db(search_word):
+    if not NpmPackage.check_if_package_on_db(search_word, search_keyword_version):
         
-        adding_scarp_packages_and_package_dep(search_word)
+        adding_scarp_packages_and_package_dep(search_word, search_keyword_version)
         if not NpmPackage.check_if_package_on_db(search_word):
             return JsonResponse({}, safe=False)
         else:
@@ -105,9 +105,9 @@ def populate_tree( keyword, keyword_search_list =[],loop_number =0):
 
 
 
-def adding_scarp_packages_and_package_dep( search_word):
+def adding_scarp_packages_and_package_dep( search_word, search_keyword_version):
     """
-        will scrap https://registry.npmjs.org/  var   /latest
+        will scrap https://registry.npmjs.org/  search_word / search_keyword_version
 
         and will add both npm package and dependecy package.
         will call filter_search_npm_package_dep_in_cach_or_db_or_api(search_word)
@@ -115,14 +115,14 @@ def adding_scarp_packages_and_package_dep( search_word):
         so, all nesting will be added
     """
     # query npmjs api
-    ret_dic = start_scraping_npmjs_for_package(search_word)
+    ret_dic = start_scraping_npmjs_for_package(search_word, search_keyword_version)
     #print(f'return dic -{ret_dic} - name: {search_word} ')
     if ret_dic != None:
-        npm_pack= NpmPackage(npm_name= search_word ,version=ret_dic['package_ver'] )
+        npm_pack= NpmPackage(npm_name= search_word , version =  search_keyword_version )
         with lock:
             npm_pack.save()
 
-        nspd_dic = returning_dic_from_pack_security_dic(search_word, ret_dic['package_ver'])
+        nspd_dic = returning_dic_from_pack_security_dic(search_word, search_keyword_version)
 
         # print(f'@@ {nspd_dic}  -- {type(nspd_dic)} ')
 
@@ -143,5 +143,5 @@ def adding_scarp_packages_and_package_dep( search_word):
                 nspd.save()  
 
         ob=  NpmPackageDependecy()
-        ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word, ret_dic['dependencies'])
+        ob.filter_search_npm_package_dep_in_cach_or_db_or_api(search_word, search_keyword_version,ret_dic['dependencies'])
 

@@ -22,7 +22,7 @@ def get_client():
     # print(f' \n settings.ES_HOST: {settings.ES_HOST}, settings.ES_PORT: {settings.ES_PORT}  \n ')
     # return es
 
-def el_search_for_package_tree(query):
+def el_search_for_package_tree(search_word, search_keyword_version):
     client = get_client()
     #print(f' info : {client.info()}')  
     #print(f'client : {client}')
@@ -30,7 +30,8 @@ def el_search_for_package_tree(query):
     body={
         'query':{
             'match':{
-                'npm_name': query,
+                'npm_name': search_word,
+                'version': '*'+search_keyword_version # for ~, ^ symbols
             },
         },
     })
