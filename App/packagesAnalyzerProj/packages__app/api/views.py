@@ -24,12 +24,12 @@ class NpmPackageView(viewsets.ModelViewSet):
         search for npm package in dependency list for foriegn model keyword
         """
         search_word = self.request.query_params.get('search2')
-        print('wwwwwwwwwwwwwwwwww')
+        #print('wwwwwwwwwwwwwwwwww')
         if not ( self.request.method == 'GET' and 'search2' in self.request.GET):
             return NpmPackage.objects.all()
         
         queryset = NpmPackage()
-        print('eeeeeeeeeeeeeeeeee')
+        #print('eeeeeeeeeeeeeeeeee')
         #queryset = NpmPackage.objects.filter(npm_name= search_word)
         return queryset.filter_search_npm_package_in_cach_or_db_or_api(search_word)
 
@@ -42,8 +42,9 @@ class NpmPackageDependecyView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        search for npm pacage in dependency list for foriegn model keyword
+        search for npm package in dependency list for foriegn model keyword
         """
+        print ('$$$$$$$$$$$$$$')
         search_word = self.request.query_params.get('search')
 
         if not ( self.request.method == 'GET' and 'search' in self.request.GET):

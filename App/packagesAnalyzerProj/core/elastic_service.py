@@ -55,6 +55,7 @@ def el_search_for_package_tree(search_word, search_keyword_version):
 
 def upsert_tree_in_el_search(tree_dic):
     # document type (string)
+    #print(f' \n ## tree_dic: {tree_dic} ')
     doc_type= "doc"
     # doc_type= "package_tree_type"
     client = get_client()

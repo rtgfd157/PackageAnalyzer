@@ -100,6 +100,42 @@ class scraping_Test(TestCase):
 
         self.assertTrue(a.is_exploite)
 
+    def test_if_dependecy_name_ok(self):
+        l =['~', '^' , '>' , '=' , '>' , ' ' ]
+
+        res = scrape_npmjs.get_page_resource( 'express', '4.15.0')
+        dic = res.json()
+        d = scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars(dic.get('dependencies'))
+
+        bol =False
+
+        for c in l:
+            if c in d.values():
+                bol= True
+        self.assertFalse(bol)
+
+
+    def test_chars_in_version(self):
+        # known to have     "statuses": ">= 1.5.0 < 2",
+        l =['~', '^' , '>' , '=' , '>' , ' ' ]
+
+        res = scrape_npmjs.get_page_resource( 'http-errors', '1.7.2')
+        dic = res.json()
+
+        # will clean from ~ ^
+        first_clean_dep = scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars(dic.get('dependencies'))
+
+        # will clean from >= 1.5.0 < 2
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars2(first_clean_dep) 
+        print(f'\n {d}')
+
+        bol =False
+
+        for c in l:
+            if c in d.values():
+                bol= True
+        self.assertFalse(bol)
+        
 
 
 

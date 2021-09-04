@@ -9,6 +9,7 @@ from django.core import serializers
 from django.http import Http404
 from packages__app.Helper.threading_helper import start_threading_scrap_insert
 import threading
+from django.shortcuts import get_list_or_404, get_object_or_404
 
 lock = threading.Lock()
 
@@ -54,13 +55,12 @@ class NpmPackageDependecy(models.Model):
 
     def filter_search_npm_package_dep_in_cach_or_db_or_api(self, search_word, search_keyword_version , dependencies):
         """
-            search the word in db if not, in api request to npmjs.com
-            need to implement caching in elasticsearch
+            search the word in db if not, in api request to npmjs.com 
         """
         
         
         # query our db
-        queryset = NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word, version = search_keyword_version)
+        queryset = NpmPackageDependecy.objects.filter(npm_package__npm_name=search_word, npm_package__version = search_keyword_version)
         if  queryset.exists():
             return queryset 
         
@@ -94,9 +94,9 @@ class NpmPackageDependecy(models.Model):
             
         else:
             for name, version in dependecies.items():
-                self.add_if_dep_package_not_in_npmPackage_model(name, search_keyword_version)
+                self.add_if_dep_package_not_in_npmPackage_model(name, version ,search_keyword_version)
 
-    def add_if_dep_package_not_in_npmPackage_model(self, npm_name, search_keyword_version):
+    def add_if_dep_package_not_in_npmPackage_model(self, npm_name, version ,search_keyword_version):
         """
             will add dependecy package also in npmPackage model if not exists 
         """
@@ -104,7 +104,7 @@ class NpmPackageDependecy(models.Model):
             ob  = NpmPackage.objects.get(npm_name=npm_name, version = search_keyword_version)
         except ObjectDoesNotExist:
             from packages__app.Helper.packages_tree import adding_scarp_packages_and_package_dep as ad
-            ad(npm_name, search_keyword_version)
+            ad(npm_name, version)
 
 
 
@@ -128,7 +128,7 @@ class NpmSecurityPackageDeatails(models.Model):
     npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
     number_of_maintainers = models.IntegerField(default = 1 , null =True)
     unpackedsize = models.IntegerField(null =True) # IntegerField - can hold up to 268 MB
-    license = models.CharField(max_length=36)
+    license = models.CharField(max_length=36, null=True, blank=True )
     updated_at = models.DateField( auto_now=True)
     is_exploite = models.BooleanField()
     num_high_severity = models.IntegerField(default = 0 , null =True, blank =True)
@@ -141,5 +141,4 @@ class NpmSecurityPackageDeatails(models.Model):
         return   " security package model: " + self.npm_package.npm_name +' is exploite: '+ str(self.is_exploite)
 
     def return_version_npm(self):
-        npm_pack = NpmPackage.objects.get(npm_name = self.npm_package)
-        return npm_pack.version
+        return self.npm_package.version

@@ -65,6 +65,7 @@ class SearchPage extends React.Component {
     
 
    async handleSubmit(event){
+    this.setState({bad_search_message  : false});
      console.log(' ^^^ '+this.state.search_version);
     event.preventDefault();
     if (   this.check_not_empty_search_word() === false  ){
@@ -72,14 +73,11 @@ class SearchPage extends React.Component {
       return 
     } 
 
-    // this.state.search_version.replace('.', '###');
 
     this.setState({ is_fetching : true});
     this.setState({ tree_data : []});
-    //search_version.replace( /./g, '###' )
-    // this.setState({ search_version , search_version.replace( /./g, '###' )  })
+  
 
-    // var ver = this.state.search_version.split(/(\b.+\b)/gi);
     var k = this.state.search_version
     console.log(' k : '+k);
     
