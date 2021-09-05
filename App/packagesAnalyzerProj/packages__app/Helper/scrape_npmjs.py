@@ -34,10 +34,13 @@ def return_dic_dependencies_out_of_notallowed_chars(dic):
         else:
             d[keys] = value
 
-        # clean from >= 1.5.0 < 2
+        
     return d
 
 def return_dic_dependencies_out_of_notallowed_chars2(dic):
+    '''
+        clean from >= 1.5.0 < 2
+    '''
 
     if dic is None: return None
     
@@ -48,10 +51,40 @@ def return_dic_dependencies_out_of_notallowed_chars2(dic):
 
         list_ver = value_version.split() # split by  ' '
 
-        version_n = [i for i in list_ver if '.' in i] # will get  ceel with '.' char
+        version_n = [i for i in list_ver if '.' in i] # will get  cell with '.' char
      
         d[keys] =version_n[0]
  
+    #print(f' $$$$ $$$$$$$$')
+    return d
+
+
+def return_dic_dependencies_out_of_notallowed_chars3(dic):
+    '''
+        clean from  1.x.x that not work on api call
+    '''
+
+    if dic is None: return None
+    
+    #print(f'dic in fun {dic} ')
+    d = {}
+
+    for keys, value_version in dic.items():
+
+
+        if value_version.count('x') > 1:
+
+            place = value_version.find('x') 
+            if place != -1:
+                list_from_str = list(value_version)
+                list_from_str[place] = '0'
+
+                        
+                d[keys] =''.join(list_from_str)
+        else:
+
+            d[keys] =value_version
+
     #print(f' $$$$ $$$$$$$$')
     return d
             

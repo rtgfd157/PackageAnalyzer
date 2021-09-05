@@ -135,6 +135,30 @@ class scraping_Test(TestCase):
             if c in d.values():
                 bol= True
         self.assertFalse(bol)
+
+        
+
+
+    def test_chars_in_version3(self):
+
+        
+        ee = {"fn.name": "1.x.x"}
+
+
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars3(ee)
+
+        bol =False
+        print(f'\n  d -- {d}')
+
+        # for c in l:
+        #     if c in d.values():
+        #         bol= True
+        # self.assertFalse(bol)
+
+
+
+
+        
         
 
 
