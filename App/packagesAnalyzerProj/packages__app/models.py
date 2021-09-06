@@ -142,3 +142,18 @@ class NpmSecurityPackageDeatails(models.Model):
 
     def return_version_npm(self):
         return self.npm_package.version
+
+
+class NpmProblemCallApi(models.Model):
+    """
+        npm package info of pacakages that couldnt been harvest
+    """
+
+    npm_package_name_problem = models.CharField(max_length=100)
+    version_problem = models.CharField(max_length=16)
+    updated_at = models.DateField( auto_now=True)
+
+
+    def __str__(self):
+        return   " security package model: " + self.npm_package_name_problem+' version: '+ self.version_problem 
+

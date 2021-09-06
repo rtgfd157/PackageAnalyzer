@@ -16,7 +16,7 @@ class ElasticSearchComponent extends React.Component {
       this.fetch_data = this.fetch_data.bind(this);
       this.adress_search_el_packages_tree_count = 'http://127.0.0.1:8000/api/count_doc_pacakges_elastic/';
       this.Styling = {background:"#F2F1F9", padding:"0.5rem", margin: '1%', flex: 1};
-      this.adress_top_packages = 'http://127.0.0.1:8000/api/top_doc_pacakges_elastic/'
+      this.adress_top_packages = 'http://127.0.0.1:8000/api/top_doc_pacakges_elastic/';
     }
     
 
@@ -32,7 +32,7 @@ class ElasticSearchComponent extends React.Component {
 
        //console.log(' *****4***** ')
        let  data_packages = await  this.fetch_data(this.adress_top_packages);
-       if (data_packages){
+       if (data_packages  ){
         //console.log('data_packages : '+ data_packages);
          this.setState({ top_packages : data_packages['list_r']});
        }else{

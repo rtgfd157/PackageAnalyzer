@@ -1,12 +1,12 @@
 from sys import version
-from  packages__app.models import NpmPackage, NpmPackageDependecy, NpmSecurityPackageDeatails
+from  packages__app.models import NpmPackage, NpmPackageDependecy, NpmSecurityPackageDeatails, NpmProblemCallApi
 from core.elastic_service import el_search_for_package_tree, upsert_tree_in_el_search
 from django.http import JsonResponse
 from django.http import HttpResponse
 from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package, returning_dic_from_pack_security_dic
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.http import Http404
-from packages__app.Helper.tree_build_helper import from_node_to_dic
+from packages__app.Helper.tree_build_helper import from_node_to_dic, from_node_with_problem_to_dic
 
 import threading
 lock = threading.Lock()
@@ -55,7 +55,10 @@ def found_keyword_on_db_making_tree_upsert_elastic_and_return_front_end(search_w
 
     print('############2##############')
     if not q == False:
-        upsert_tree_in_el_search(q)
+        try:
+            upsert_tree_in_el_search(q)
+        except:
+            print('error in elastic')
         return JsonResponse(q, safe=False)
 
 
@@ -80,17 +83,25 @@ def make_tree_start(search_word, search_keyword_version):
         return q
 
 
-def populate_tree( keyword,search_keyword_version ,keyword_search_list =[],loop_number =0):
+def populate_tree( keyword, search_keyword_version ,keyword_search_list =[],loop_number =0):
         """
            node_parent in order to  check  circular call parent->child->parent
            keyword_search_list  - all search word used on branch
         """
         #print('@@@@@@@1@@@@')
         try:
-            node = get_object_or_404(NpmPackage, npm_name=keyword , version = search_keyword_version)
+            node = NpmPackage.objects.get( npm_name=keyword , version = search_keyword_version)
+            #node = get_object_or_404(NpmPackage, npm_name=keyword , version = search_keyword_version)
         except NpmPackage.DoesNotExist:
-            print('errrrrrrrrrrrrrrrrrrpr')
-            raise Http404("Given NpmPackage query not found....")
+            print(sys.exc_info()[0])
+            print(f'errrrrrrrrrrrrrrrrrrpr - {keyword} ,{search_keyword_version} ')
+            npm_problem = NpmProblemCallApi(npm_package_name_problem = keyword , version_problem = search_keyword_version )
+            npm_problem, created = NpmProblemCallApi.objects.get_or_create(
+                    npm_package_name_problem = keyword ,
+                    version_problem = search_keyword_version
+                )
+            return from_node_with_problem_to_dic(npm_problem)
+            #raise Http404(f"Given NpmPackage query not found.... - {keyword} ,{search_keyword_version} ")
         #print('@@@@@@@2@@@@')
 
         try:

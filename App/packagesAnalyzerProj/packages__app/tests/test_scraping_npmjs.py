@@ -6,6 +6,7 @@ from packages__app.Helper import packages_tree
 from packages__app.models import NpmPackageDependecy, NpmPackage , NpmSecurityPackageDeatails
 
 # terminal python3 manage.py test packages__app.tests.test_scraping_npmjs.scraping_Test  --verbosity 2
+# python3 manage.py test packages__app.tests.test_scraping_npmjs.scraping_Test  --verbosity 2
 
 # models test
 class scraping_Test(TestCase):
@@ -141,7 +142,7 @@ class scraping_Test(TestCase):
 
     def test_chars_in_version3(self):
 
-        
+        c = 'x'
         ee = {"fn.name": "1.x.x"}
 
 
@@ -150,10 +151,38 @@ class scraping_Test(TestCase):
         bol =False
         print(f'\n  d -- {d}')
 
-        # for c in l:
-        #     if c in d.values():
-        #         bol= True
-        # self.assertFalse(bol)
+
+        for keys, value_version in d.items():
+
+            if value_version.count('x') > 1 : 
+            
+                bol= True
+        self.assertFalse(bol)
+
+    def test_chars_in_version4(self):  
+        ''''
+            test  "object-assign": "^4",
+                    "vary": "^1"
+        '''
+        ee = {"object-assign": "^4",
+                "vary": "^1"}
+
+
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars3(ee)
+
+        #print(f'\n  d -- {d}')
+        self.assertTrue(len(ee) > 0)
+
+    def test_chars_in_version5(self):  
+       
+        ee = {"pgpass": "1.x",}
+
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars3(ee)
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars2(d)
+        d= scrape_npmjs.return_dic_dependencies_out_of_notallowed_chars3(d)
+
+        print(f'\n  d -- {d}')
+        self.assertTrue(d['pgpass']  == '1.x')
 
 
 

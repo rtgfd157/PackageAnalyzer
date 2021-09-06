@@ -50,10 +50,14 @@ def return_dic_dependencies_out_of_notallowed_chars2(dic):
     for keys, value_version in dic.items():
 
         list_ver = value_version.split() # split by  ' '
-
         version_n = [i for i in list_ver if '.' in i] # will get  cell with '.' char
-     
-        d[keys] =version_n[0]
+
+        if len(value_version) == 0:
+        # will deal wit cases like '^4'
+            d[keys] =value_version
+        else:
+        
+            d[keys] =version_n[0]
  
     #print(f' $$$$ $$$$$$$$')
     return d
@@ -108,7 +112,11 @@ def start_scraping_npmjs_for_package(search_word, search_keyword_version):
         # if dic.get() not found is return None
         first_clean_dep=  return_dic_dependencies_out_of_notallowed_chars(dic.get('dependencies'))
 
-        ret_dic['dependencies'] =return_dic_dependencies_out_of_notallowed_chars2(first_clean_dep) # second clean
+        second_clean_dep =return_dic_dependencies_out_of_notallowed_chars2(first_clean_dep) # second clean
+
+        ret_dic['dependencies'] =  return_dic_dependencies_out_of_notallowed_chars3(second_clean_dep)
+
+
 
         ret_dic['number_of_maintainers']= len(dic.get('maintainers'))
         ret_dic['unpackedSize']= dic.get('dist').get('unpackedSize')

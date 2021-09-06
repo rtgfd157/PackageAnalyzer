@@ -67,7 +67,10 @@ checking every  search in code and create if not exists, need to change to make 
 
 Elastic :   
    >showing Documents in index:  
-    >>  http://localhost:9200/elastic_packages_tree/_search     
+    >>  http://localhost:9200/elastic_packages_tree/_search  
+
+   > delete index from elastic container shell
+    >>  curl -XDELETE 0:9200/elastic_packages_tree
 
 
 
