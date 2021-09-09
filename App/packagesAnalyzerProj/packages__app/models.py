@@ -128,7 +128,7 @@ class NpmSecurityPackageDeatails(models.Model):
     npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
     number_of_maintainers = models.IntegerField(default = 1 , null =True)
     unpackedsize = models.IntegerField(null =False, blank =True, default= 0) # IntegerField - can hold up to 268 MB
-    license = models.CharField(max_length=36, null=False, blank=True, default= '' )
+    license = models.CharField(max_length=36, null=True, blank=True, default= '' )
     updated_at = models.DateField( auto_now=True)
     is_exploite = models.BooleanField()
     num_high_severity = models.IntegerField(default = 0 , null =True, blank =True)
