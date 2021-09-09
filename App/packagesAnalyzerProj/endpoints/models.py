@@ -59,7 +59,7 @@ class MLAlgorithmStatus(models.Model):
     parent_mlalgorithm = models.ForeignKey(MLAlgorithm, on_delete=models.CASCADE, related_name = "status")
 
     def __str__(self):
-        return self.status + ' ' + self.active + self.parent_mlalgorithm.name
+        return self.status + ' ' + str(self.active) + self.parent_mlalgorithm.name
 
 class MLRequest(models.Model):
     '''
