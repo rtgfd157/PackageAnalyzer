@@ -21,7 +21,9 @@ from django.conf import settings
 from packages__app.api.urls import routerList_packages__app
 from endpoints.api.urls import router_list_endpoints
 
-from packages__app import views
+from packages__app import views as views_packages__app
+from endpoints import views as views_endpoints
+
 
 router = DefaultRouter()
 router.registry.extend(routerList_packages__app.registry)
@@ -33,7 +35,9 @@ urlpatterns = [
     path('api/', include(router.urls)),
     path("api/",include("packages__app.api.urls")),
     path("api/",include("packages__app.urls")),
-    path('celery_task_updating_npm_packages_and_dependecies', views.task_view ),
+    path('celery_task_updating_npm_packages_and_dependecies', views_packages__app.task_view ),
+    path('celery_task_build_ml_linear_regression_file', views_endpoints.task_build_ml_linear_regression_file ),
+
 
 ]
 

@@ -102,6 +102,7 @@ class SearchPage extends React.Component {
       console.log('fghfhg');
       this.insert_good_return();
     }else{
+      console.log('search_no_result');
       this.search_no_result()
     }
   

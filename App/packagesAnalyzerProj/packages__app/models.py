@@ -127,7 +127,7 @@ class NpmSecurityPackageDeatails(models.Model):
 
     npm_package = models.ForeignKey(NpmPackage, on_delete=models.CASCADE)
     number_of_maintainers = models.IntegerField(default = 1 , null =True)
-    unpackedsize = models.IntegerField(null =True) # IntegerField - can hold up to 268 MB
+    unpackedsize = models.IntegerField(null =True, default= 0) # IntegerField - can hold up to 268 MB
     license = models.CharField(max_length=36, null=True, blank=True )
     updated_at = models.DateField( auto_now=True)
     is_exploite = models.BooleanField()
@@ -152,7 +152,6 @@ class NpmProblemCallApi(models.Model):
     npm_package_name_problem = models.CharField(max_length=100)
     version_problem = models.CharField(max_length=16)
     updated_at = models.DateField( auto_now=True)
-
 
     def __str__(self):
         return   " security package model: " + self.npm_package_name_problem+' version: '+ self.version_problem 
