@@ -23,9 +23,9 @@ from scipy.special import logit
 
 def task_build_ml_linear_regression_file(request):
 
-    build()    
+    #build()    
     
-    #build_ml_linear_regression_algorithm.delay()
+    build_ml_linear_regression_algorithm.delay()
     return HttpResponse("celery task started  ... ")
 
 
@@ -51,6 +51,14 @@ def build():
     lrm=linear_model.LogisticRegression()
     lrm.fit(df_X_data,df_Y_data)
 
+    r_sq = lrm.score(df_X_data,df_Y_data)
+
+    print(f'r_sq : \n  -  {r_sq} -  ')
+
+
+    print(f' intercept : {lrm.intercept_}')
+
+    print(f' slope : {lrm.coef_}')
     joblib.dump(lrm, "./linear_regression_NpmSecurityPackageDeatails_model.joblib", compress=True)
 
     print(f' \n finished build_ml_linear_regression_algorithm')

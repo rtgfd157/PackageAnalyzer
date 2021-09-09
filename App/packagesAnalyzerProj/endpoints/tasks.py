@@ -46,30 +46,54 @@ def build_ml_linear_regression_algorithm():
     """
 
 
+    #print(f'    starting task building ML  :-) ')
+
+
+
+    # X_data= NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize','license').all()
+    # Y_data= NpmSecurityPackageDeatails.objects.values_list('is_exploite').all()
+
+    # df_X_data = pd.DataFrame(list(NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize','license').all()))
+    # df_Y_data= pd.DataFrame(list(NpmSecurityPackageDeatails.objects.values_list('is_exploite').all()))
+
+    # # convert categoricals
+    # encoders = {}
+    # for column in ['number_of_maintainers', 'unpackedsize', 'license']:
+    #     categorical_convert = LabelEncoder()
+    #     df_X_data[column] = categorical_convert.fit_transform(df_X_data[column])
+    #     encoders[column] = categorical_convert
+
+
     print(f'    starting task building ML  :-) ')
 
 
 
-    X_data= NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize','license').all()
-    Y_data= NpmSecurityPackageDeatails.objects.values_list('is_exploite').all()
+    #X_data= NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize').all()
+    #Y_data= NpmSecurityPackageDeatails.objects.values_list('is_exploite').all()
 
-    df_X_data = pd.DataFrame(list(NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize','license').all()))
+    df_X_data = pd.DataFrame(list(NpmSecurityPackageDeatails.objects.values_list('number_of_maintainers','unpackedsize').all()))
     df_Y_data= pd.DataFrame(list(NpmSecurityPackageDeatails.objects.values_list('is_exploite').all()))
 
     # convert categoricals
-    encoders = {}
-    for column in ['number_of_maintainers', 'unpackedsize', 'license']:
-        categorical_convert = LabelEncoder()
-        df_X_data[column] = categorical_convert.fit_transform(df_X_data[column])
-        encoders[column] = categorical_convert
+    # encoders = {}
+    # for column in ['number_of_maintainers', 'unpackedsize', 'license']:
+    #     categorical_convert = LabelEncoder()
+    #     df_X_data[column] = categorical_convert.fit_transform(df_X_data[column])
+    #     encoders[column] = categorical_convert
 
 
     lrm=linear_model.LogisticRegression()
     lrm.fit(df_X_data,df_Y_data)
 
-    joblib.dump(lrm, "./linear_regression_NpmSecurityPackageDeatails_model.joblib", compress=True)
+    r_sq = lrm.score(df_X_data,df_Y_data)
+
+    print(f'r_sq : \n  -  {r_sq} -  ')
+
+
+    print(f' intercept : {lrm.intercept_}')
+
+    print(f' slope : {lrm.coef_}')
+    joblib.dump(lrm, "./ML_trained_Data/linear_regression_NpmSecurityPackageDeatails_model.joblib", compress=True)
 
     print(f' \n finished build_ml_linear_regression_algorithm')
-
-    #print(f'd  - {d}')
     
