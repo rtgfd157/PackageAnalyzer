@@ -26,3 +26,11 @@ def from_node_with_problem_to_dic(node):
 
     return dic
 
+def unpackedsize_return_not_null(dic):
+    val = dic.get('unpackedSize')
+
+    if val is None:
+        return 0
+    return val
+
+

@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from packages__app.Helper.scrape_npmjs import start_scraping_npmjs_for_package, returning_dic_from_pack_security_dic
 from django.shortcuts import get_list_or_404, get_object_or_404
 from django.http import Http404
-from packages__app.Helper.tree_build_helper import from_node_to_dic, from_node_with_problem_to_dic
+from packages__app.Helper.tree_build_helper import from_node_to_dic, from_node_with_problem_to_dic, unpackedsize_return_not_null
 
 import threading
 lock = threading.Lock()
@@ -181,7 +181,7 @@ def adding_scarp_packages_and_package_dep( search_word, search_keyword_version):
             if  nspd_dic.get('is_exploite') :
 
                 nspd =  NpmSecurityPackageDeatails(npm_package =  npm_pack, number_of_maintainers = ret_dic['number_of_maintainers'],
-                        unpackedsize = ret_dic.get('unpackedSize') , license =  ret_dic.get('license') ,
+                        unpackedsize = unpackedsize_return_not_null(ret_dic)  , license =  ret_dic.get('license') ,
                         is_exploite  =  nspd_dic.get('is_exploite'), num_info_severity =  nspd_dic.get('num_info_severity') ,
                         num_low_severity =  nspd_dic.get('num_low_severity') ,
                         num_moderate_severity =  nspd_dic.get('num_moderate_severity'), num_high_severity = nspd_dic.get('num_high_severity'),
@@ -190,7 +190,9 @@ def adding_scarp_packages_and_package_dep( search_word, search_keyword_version):
                     nspd.save()
             else:
                 nspd =  NpmSecurityPackageDeatails(npm_package =  npm_pack, number_of_maintainers = ret_dic['number_of_maintainers'],
-                                                    is_exploite  =nspd_dic.get('is_exploite'), unpackedsize = ret_dic.get('unpackedSize') )
+                                                    is_exploite  =nspd_dic.get('is_exploite'),
+                                                    
+                                                     unpackedsize =  unpackedsize_return_not_null(ret_dic)   )
                 with lock:
                     nspd.save()  
 
