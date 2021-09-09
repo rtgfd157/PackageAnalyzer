@@ -59,6 +59,6 @@ def build():
     print(f' intercept : {lrm.intercept_}')
 
     print(f' slope : {lrm.coef_}')
-    joblib.dump(lrm, "./linear_regression_NpmSecurityPackageDeatails_model.joblib", compress=True)
+    joblib.dump(lrm, "./ML_trained_Data/linear_regression_NpmSecurityPackageDeatails_model.joblib", compress=True)
 
     print(f' \n finished build_ml_linear_regression_algorithm')
