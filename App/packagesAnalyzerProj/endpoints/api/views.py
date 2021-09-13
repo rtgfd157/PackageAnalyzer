@@ -1,9 +1,13 @@
 # backend/server/apps/endpoints/views.py file
 from rest_framework import viewsets
 from rest_framework import mixins
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from endpoints.models import Endpoint, MLAlgorithm , MLAlgorithmStatus , MLRequest
 from endpoints.api.serializers import EndpointSerializer,MLAlgorithmSerializer, MLAlgorithmStatusSerializer,MLRequestSerializer
+
+
 
 class EndpointViewSet(
     mixins.RetrieveModelMixin, mixins.ListModelMixin, viewsets.GenericViewSet
@@ -51,3 +55,16 @@ class MLRequestViewSet(
 ):
     serializer_class = MLRequestSerializer
     queryset = MLRequest.objects.all()
+
+
+
+
+class LastFiveMLRequestView(viewsets.ViewSet):
+    serializer_class = MLRequestSerializer
+
+    queryset = MLRequest.objects.all()[:5]
+
+    def list(self, request):
+        queryset = MLRequest.objects.all()[:5]
+        serializer = MLRequestSerializer(queryset, many=True)
+        return Response(serializer.data)

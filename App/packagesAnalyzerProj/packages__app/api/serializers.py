@@ -20,6 +20,8 @@ class NpmSecurityPackageDeatailsSerializer(serializers.ModelSerializer):
         slug_field='npm_name'
     )
     return_version_npm = serializers.ReadOnlyField()
+
+    
     class Meta:
         model = NpmSecurityPackageDeatails
         #fields = '__all__'

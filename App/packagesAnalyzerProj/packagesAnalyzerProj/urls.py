@@ -39,6 +39,7 @@ urlpatterns = [
     path("api/",include("packages__app.api.urls")),
     path("api/",include("packages__app.urls")),
     path("api/",include("endpoints.urls")),
+    path("api/",include("endpoints.api.urls")),
     path('celery_task_updating_npm_packages_and_dependecies', views_packages__app.task_view ),
     path('celery_task_build_ml_linear_regression_file', views_endpoints.task_build_ml_linear_regression_file ),
 

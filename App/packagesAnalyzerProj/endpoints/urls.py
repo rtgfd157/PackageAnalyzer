@@ -11,6 +11,8 @@ urlpatterns = [
          PredictView.as_view(),
          name="predict"),
 
+          
+
   
 
 

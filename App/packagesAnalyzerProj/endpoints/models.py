@@ -38,7 +38,7 @@ class MLAlgorithm(models.Model):
     parent_endpoint = models.ForeignKey(Endpoint, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name + ' ' + self.description
+        return self.name + ' - ' + self.description
 
 class MLAlgorithmStatus(models.Model):
     '''

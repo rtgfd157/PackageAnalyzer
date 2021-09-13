@@ -4,6 +4,8 @@ import SearchPage from './components/SearchPage';
 import StatsComponent  from  './components/StatisticsDirectoryComponents/StatsComponent';
 import AboutComponent from './components/AboutComponent';
 import NpmSecurityToTable from './components/NpmSecurityComponents/NpmSecurityToTable';
+
+import Prediction from './components/NpmPredictionComponents/Prediction';
 import './App.css';
 import Home from './components/Home';
 
@@ -36,6 +38,8 @@ function App() {
               <Link style={Styling} to="/stats_page">Stats</Link>
               <Link style={Styling} to="/npm_security_table">Npm Security Table</Link>
 
+              <Link style={Styling} to="/npm_prediction">Npm Prediction </Link>
+
               
               </div>
 
@@ -56,9 +60,14 @@ function App() {
           <Route path="/npm_security_table">
             <NpmSecurityToTable />
           </Route>
+          <Route path="/npm_prediction">
+            <Prediction />
+          </Route>
           <Route path="/">
             <Home />
           </Route>
+
+
         </Switch>
     </Router>
 

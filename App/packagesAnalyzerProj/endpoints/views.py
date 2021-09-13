@@ -75,6 +75,7 @@ def build():
 class PredictView(views.APIView):
     def post(self, request, endpoint_name, format=None):
 
+        # if dont use strip there are bugs !!! - line down from url param
         algorithm_status = self.request.query_params.get("status", "production").strip()
         algorithm_version = self.request.query_params.get("version").strip()
 
@@ -100,7 +101,7 @@ class PredictView(views.APIView):
             #print(f'algorithm_version-{algorithm_version}-type-{type(al.version)}')
             
             # filter not working 
-        #algs = algs.filter(version = algorithm_version)
+        algs = algs.filter(version = algorithm_version)
         #print(f'algs - {algs}')
         if len(algs) == 0:
         #if counter == 0:    

@@ -34,6 +34,10 @@ class MLAlgorithmStatusSerializer(serializers.ModelSerializer):
                             "parent_mlalgorithm")
 
 class MLRequestSerializer(serializers.ModelSerializer):
+
+
+    parent_mlalgorithm =serializers.StringRelatedField(many=False)
+
     class Meta:
         model = MLRequest
         read_only_fields = (
@@ -51,5 +55,5 @@ class MLRequestSerializer(serializers.ModelSerializer):
             "response",
             "feedback",
             "created_at",
-            "parent_mlalgorithm",
+            'parent_mlalgorithm'
         )
