@@ -7,7 +7,8 @@ class AlgorythmDropDownList extends React.Component {
       this.state = {
             list_algo:[],
           is_mount :false,
-          dropdownOpen: false 
+          dropdownOpen: false,
+          chosen_algo_for_prediction: props.chosen_algo_for_prediction
           
       };
       this.fetch_data = this.fetch_data.bind(this);
@@ -16,14 +17,10 @@ class AlgorythmDropDownList extends React.Component {
       this.Styling = { padding:"0.5rem", margin: '1%'};
 
 
-      this.handle_change_algorythm_list = this.props.handle_change_algorythm_list.bind(this);
+      //this.handle_change_algorythm_list = this.props.handle_change_algorythm_list.bind(this);
       this.toggle = this.toggle.bind(this);
       this.setLastClicked = this.setLastClicked.bind(this);
 
-      
-
-
-      
       
     }
 
@@ -65,16 +62,25 @@ class AlgorythmDropDownList extends React.Component {
 
                         <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                         <DropdownToggle caret>
-                        Dropdown
+                        Dropdown -  
+                        {     this.props.chosen_algo_for_prediction && this.props.chosen_algo_for_prediction.name }
+                        - {     this.props.chosen_algo_for_prediction && this.props.chosen_algo_for_prediction.version }
                         </DropdownToggle>
-                        <DropdownMenu>
+                        <DropdownMenu container="body">
                         
 
                         {this.state.list_algo.map(algo => <div key={algo.id}>
-                            <DropdownItem>{algo.name}</DropdownItem> </div>
+                            <DropdownItem 
+                            id={algo.id}
+                             key={algo.id}
+                             version={algo.version}
+                             current_status={algo.current_status}
+                             name = {algo.name}
+                            onClick={this.props.handle_change_algorythm_list}
+                            
+                            >{algo.name}  {algo.current_status}&{algo.version} </DropdownItem> </div>
                                    ) } 
                             
-                        <DropdownItem onClick={() => this.setLastClicked(1)}> jh</DropdownItem>
                         </DropdownMenu>
                         </Dropdown>
             </div>
