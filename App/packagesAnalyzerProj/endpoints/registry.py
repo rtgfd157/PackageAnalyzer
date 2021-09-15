@@ -13,6 +13,8 @@ class MLRegistry:
         # get endpoint
         endpoint, _ = Endpoint.objects.get_or_create(name=endpoint_name, owner=owner)
 
+        #print(f' endpoint {endpoint} . is_created in get_or_create - {_}')
+
         # get algorithm
         database_object, algorithm_created = MLAlgorithm.objects.get_or_create(
                 name=algorithm_name,
@@ -21,6 +23,7 @@ class MLRegistry:
                 version=algorithm_version,
                 owner=owner,
                 parent_endpoint=endpoint)
+        #print(f' database_object {database_object} . is_created in get_or_create - {algorithm_created}')
         if algorithm_created:
             status = MLAlgorithmStatus(status = algorithm_status,
                                         created_by = owner,

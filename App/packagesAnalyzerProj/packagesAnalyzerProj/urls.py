@@ -48,10 +48,9 @@ urlpatterns = [
 
 ]
 
-from django.core.management import call_command
-# make ml registry in db  on startup
-from packagesAnalyzerProj import create_ml_registry
 
+
+from django.core.management import call_command
 
 # loading data on startup  if no data exists
 try:
@@ -63,3 +62,7 @@ try:
 
 except Exception:
     traceback.print_exc()
+
+
+# make ml registry in db  on startup
+from packagesAnalyzerProj import create_ml_registry

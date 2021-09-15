@@ -12,7 +12,7 @@ try:
             registry.add_algorithm(endpoint_name="linear_regression_classifier",
                                     algorithm_object=rf,
                                     algorithm_name="linear regression",
-                                    algorithm_status="production",
+                                    algorithm_status="development",
                                     algorithm_version="0.0.1",
                                     owner="idan",
                                     algorithm_description="linear regression with simple pre- and post-processing",
