@@ -19,15 +19,11 @@ class AlgorythmDropDownList extends React.Component {
 
       //this.handle_change_algorythm_list = this.props.handle_change_algorythm_list.bind(this);
       this.toggle = this.toggle.bind(this);
-      this.setLastClicked = this.setLastClicked.bind(this);
 
       
     }
 
-    setLastClicked(val){
-        console.log(val);
-
-    }
+   
 
      toggle(){
         
@@ -55,7 +51,7 @@ class AlgorythmDropDownList extends React.Component {
       
       return (
                   <div>
-                    <p>  algo of Prediction:  <u></u> </p>
+                    <p>  Algo of Prediction:  <u></u> </p>
                    
                    
 

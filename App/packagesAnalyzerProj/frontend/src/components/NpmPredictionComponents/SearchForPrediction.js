@@ -1,5 +1,7 @@
 import React from 'react';
 import AlgorythmDropDownList from './SearchForPredictionComponent/AlgorythmDropDownList' ;
+import PackageSearchForPrediction from './PackageSearchForPrediction';
+import PredictionPost from './PredictionPost';
 
 class SearchForPrediction extends React.Component {
     constructor(props) {
@@ -8,25 +10,35 @@ class SearchForPrediction extends React.Component {
           data:{},
           counnt_npm_sec : 'didnt fetch successfuly yet',
           is_mount :false,
-          chosen_algo_for_prediction: null
+          chosen_algo_for_prediction: null,
+          number_of_maintainers: 0 ,
+          unpackedsize: 0
           
       };
       this.fetch_data = this.fetch_data.bind(this);
       
-      this.npm_security_packages = 'http://127.0.0.1:8000/api/npm_package_security/' ; 
-      this.count_npm_security = 'http://127.0.0.1:8000/api/count_npm_security/' ; 
+   
       this.Styling = { padding:"0.5rem", margin: '1%'};
 
       this.handle_change_algorythm_list =this.handle_change_algorythm_list.bind(this);
+      this.handle_change_number_of_maintainers_unpackedsize =this.handle_change_number_of_maintainers_unpackedsize.bind(this);
 
-      
+
     }
     
-
     async componentDidMount() {
        
        
       }
+
+   async handle_change_number_of_maintainers_unpackedsize(number_of_maintainers, unpackedsize){
+     console.log(' handle_change_number_of_maintainers_unpackedsize');
+     console.log(number_of_maintainers+ '  $$$ ' + unpackedsize)
+
+     await this.setState({ unpackedsize : unpackedsize,
+     number_of_maintainers: number_of_maintainers
+        });
+   }
 
    async  handle_change_algorythm_list (event){
     // algo
@@ -83,6 +95,15 @@ class SearchForPrediction extends React.Component {
                     handle_change_algorythm_list= {this.handle_change_algorythm_list}
                     chosen_algo_for_prediction ={this.state.chosen_algo_for_prediction}
                     />
+                    <PackageSearchForPrediction
+                    handle_change_number_of_maintainers_unpackedsize = {this.handle_change_number_of_maintainers_unpackedsize}
+                    
+                    />
+                    <PredictionPost 
+                    
+                    number_of_maintainers= {this.state.number_of_maintainers}
+                    unpackedsize= {this.state.unpackedsize}
+                    chosen_algo_for_prediction= {this.state.chosen_algo_for_prediction} />
 
             </div>
             ) 

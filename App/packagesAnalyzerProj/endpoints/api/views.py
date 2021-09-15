@@ -62,9 +62,9 @@ class MLRequestViewSet(
 class LastFiveMLRequestView(viewsets.ViewSet):
     serializer_class = MLRequestSerializer
 
-    queryset = MLRequest.objects.all()[:5]
+    queryset = MLRequest.objects.all().order_by('-created_at')[:5]
 
     def list(self, request):
-        queryset = MLRequest.objects.all()[:5]
+        queryset = MLRequest.objects.all().order_by('-created_at')[:5]
         serializer = MLRequestSerializer(queryset, many=True)
         return Response(serializer.data)

@@ -16,8 +16,6 @@ class Prediction extends React.Component {
         };
         this.fetch_data = this.fetch_data.bind(this);
 
-        this.npm_security_packages = 'http://127.0.0.1:8000/api/npm_package_security/';
-        this.count_npm_security = 'http://127.0.0.1:8000/api/count_npm_security/';
         this.Styling = { padding: "0.5rem", margin: '1%' };
 
 

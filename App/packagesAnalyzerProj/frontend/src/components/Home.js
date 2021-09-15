@@ -16,9 +16,7 @@ const Home = () => {
             <li style={{ textAlign: "left" }}>http://localhost:9200/elastic_packages_tree/_mapping/?pretty</li>
             <li style={{ textAlign: "left" }}>http://127.0.0.1:8000/api/</li>
             <li style={{ textAlign: "left" }}>http://127.0.0.1:3000/</li>
-
-
-
+            <li style={{ textAlign: "left" }}>http://127.0.0.1:8000/api/predict/linear_regression_classifier/?status=production&version=0.0.1</li>
 
         </ul>
 
