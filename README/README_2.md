@@ -107,3 +107,22 @@ return regFetch('/-/npm/v1/security/audits', opts)
 ```
 
 ![Npm security table](npm_security_table.png)
+
+
+need to add:
+
+- celery creating new ml file, plus making the file from the FE
+- testing
+- auto updating predict history on search
+- add Number Of maintainers, Package Size to be change by hand (manually) 
+- make history prediction nicer
+- put load_data_startup.py not in url .py
+- check what root cause in duplications in Mlalgorithms
+- add field classifier to Mlalgorithms serialization (method , like in current_status ..)
+- seeing endpoints model in FE and have the ability to change them.
+- make A/B testing ability FE/BE
+- add field license to linear regression and see the result.
+- make http://mpld3.github.io/ , D3 Renderings of Matplotlib Graphics -  to the front end  to see how our data looks.
+https://github.com/mpld3/mpld3/tree/master/examples
+https://stackoverflow.com/questions/53388276/from-flask-how-to-send-the-matplotlib-plot-image-into-json-object
+- research the data

@@ -9,9 +9,7 @@ import json
 from numpy.random import rand
 from rest_framework import views, status
 from rest_framework.response import Response
-from endpoints.registry import MLRegistry
-from packagesAnalyzerProj import create_ml_registry 
-from packagesAnalyzerProj.create_ml_registry import registry
+from packagesAnalyzerProj.create_ml_registry import LoadMlRegistry
 
 
 from packages__app.models import NpmPackageDependecy,NpmPackage, NpmSecurityPackageDeatails
@@ -119,7 +117,10 @@ class PredictView(views.APIView):
         if algorithm_status == "ab_testing":
             alg_index = 0 if rand() < 0.5 else 1
 
-        algorithm_object = registry.endpoints[algs[alg_index].id]
+        # create registery 
+        clm = LoadMlRegistry()
+        clm.create_reg()
+        algorithm_object = clm.registry.endpoints[algs[alg_index].id]
 
         #algorithm_object = MLRegistry()
         prediction = algorithm_object.compute_prediction(request.data)

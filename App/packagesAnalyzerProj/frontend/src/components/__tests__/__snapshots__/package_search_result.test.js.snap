@@ -15,11 +15,5 @@ exports[`match snapshot  1`] = `
     
      
   </p>
-  <h2>
-     Name: 
-    test
-     version: 
-    1.0.1
-  </h2>
 </div>
 `;
